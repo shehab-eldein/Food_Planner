@@ -18,12 +18,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     Context context;
 
     int images[] = {
-
             R.drawable.dish2,
             R.drawable.dish1,
             R.drawable.dish4,
             R.drawable.dish
-
     };
 
     int headings[] = {

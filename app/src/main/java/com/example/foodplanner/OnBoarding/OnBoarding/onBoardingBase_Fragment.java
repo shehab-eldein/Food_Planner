@@ -1,12 +1,12 @@
-package com.example.foodplanner.OnBoarding;
+package com.example.foodplanner.OnBoarding.OnBoarding;
 
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import android.text.Html;
@@ -22,7 +22,7 @@ public class onBoardingBase_Fragment extends Fragment {
 
     ViewPager mSLideViewPager;
     LinearLayout mDotLayout;
-    Button backbtn, nextbtn, skipbtn;
+    Button  skipbtn;
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
 
@@ -40,33 +40,33 @@ public class onBoardingBase_Fragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated( View view,  Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //backbtn = view.findViewById(R.id.backbtn);
-        //nextbtn = view.findViewById(R.id.nextbtn);
-        //skipbtn = view.findViewById(R.id.skipButton);
-/*        skipbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-                /*Intent i = new Intent(MainActivity.this,mainscreen.class);
-                startActivity(i);
-                finish();
-
-            }
-        });*/
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        skipbtn = view.findViewById(R.id.skipButton);
         mSLideViewPager = (ViewPager) view.findViewById(R.id.slideViewPager);
         mDotLayout = (LinearLayout) view.findViewById(R.id.indicator_layout);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         viewPagerAdapter = new ViewPagerAdapter(requireContext());
-
         mSLideViewPager.setAdapter(viewPagerAdapter);
 
         setUpindicator(0);
         mSLideViewPager.addOnPageChangeListener(viewListener);
+        skipBtnClicked();
 
+    }
+    public void skipBtnClicked() {
+        skipbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Navigation.findNavController(v).navigate(R.id.action_onBoardingBase_Fragment_to_signs_Fragment);
+
+                //finish();
+
+            }
+        });
     }
     public void setUpindicator(int position){
 
@@ -94,6 +94,7 @@ public class onBoardingBase_Fragment extends Fragment {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
         }
 
 
@@ -102,15 +103,7 @@ public class onBoardingBase_Fragment extends Fragment {
 
             setUpindicator(position);
 
-            if (position > 0){
 
-                //backbtn.setVisibility(View.VISIBLE);
-
-            }else {
-
-                //backbtn.setVisibility(View.INVISIBLE);
-
-            }
 
         }
 

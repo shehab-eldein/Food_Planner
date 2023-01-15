@@ -7,14 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="myOrange">#FE724C</color>
-    <color name="background">#EEEEEE</color>
+    <color name="DarkGraybackground">#EEEEEE</color>
     <color name="buttontext">#50C2C9</color>
     <color name="darkBlue">#131A38</color>
     <color name="GrayFont"> #616772</color>
-    <color name="darkBlueHeader">#111719
-    </color>
+    <color name="darkBlueHeader">#111719</color>
+    <color name="lightGrayBackGround">#FCFCFC</color>
+    <color name="facebook">#3b5998</color>
 
     //indicator color
     <color name="inactive">#C4C4C4</color>

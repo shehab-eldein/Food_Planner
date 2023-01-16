@@ -123,4 +123,13 @@
     <string name="ClientId">587667101879-p8qi6dcbljr99pguqhhp94rdlonp4q88.apps.googleusercontent.com</string>
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    <string name="inspiration">Daily Inspiration  Meals</string>
+    <string name="food">Food</string>
+    <string name="planner">Planner</string>
+    <string name="category">" Categories Meal"</string>
+    <string name="category_Meals">Category Meals</string>
+
+
 </resources>

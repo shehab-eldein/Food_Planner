@@ -20,4 +20,8 @@
     <color name="inactive">#C4C4C4</color>
     <color name="active">#FE724C</color>
 
+    ////////////////////////
+    <color name="light_background">#17FF5722</color>
+    <color name="custom">#FE724C</color>
+
 </resources>

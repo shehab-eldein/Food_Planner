@@ -131,5 +131,9 @@
     <string name="category">" Categories Meal"</string>
     <string name="category_Meals">Category Meals</string>
 
+//////////////////////////////////////////////////////////////////////////////////
+    <string name="search_lebal">Search</string>
+    <string name="search_by_ingredients">Search by Ingredients</string>
+    <string name="search_by_meal">Search by Meal</string>
 
 </resources>

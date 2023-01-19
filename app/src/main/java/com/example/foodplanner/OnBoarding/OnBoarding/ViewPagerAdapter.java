@@ -22,6 +22,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.drawable.dish1,
             R.drawable.dish4,
             R.drawable.dish
+
     };
 
     int headings[] = {

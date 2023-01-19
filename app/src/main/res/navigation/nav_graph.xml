@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_Fragment">
+    app:startDestination="@id/splash_Fragment">
     <fragment
         android:id="@+id/onBoardingBase_Fragment"
         android:name="com.example.foodplanner.OnBoarding.OnBoarding.onBoardingBase_Fragment"
@@ -54,7 +54,49 @@
     </fragment>
     <fragment
         android:id="@+id/home_Fragment"
-        android:name="com.example.foodplanner.OnBoarding.Home_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.Home.Home_Fragment"
         android:label="fragment_home_"
-        tools:layout="@layout/fragment_home_" />
+        tools:layout="@layout/fragment_home_" >
+        <action
+            android:id="@+id/action_home_Fragment_to_signIn_Fragment2"
+            app:destination="@id/signIn_Fragment2" />
+        <action
+            android:id="@+id/action_home_Fragment_to_detail_Fragment"
+            app:destination="@id/detail_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detail_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.Home.Detail_Fragment"
+        android:label="fragment_detail_"
+        tools:layout="@layout/fragment_detail_" >
+        <argument
+            android:name="ID"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/splash_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.OnBoarding.Splash_Fragment"
+        android:label="fragment_splash_"
+        tools:layout="@layout/fragment_splash_" >
+        <action
+            android:id="@+id/action_splash_Fragment_to_onBoardingBase_Fragment"
+            app:destination="@id/onBoardingBase_Fragment"
+            app:enterAnim="@anim/from_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/favorite_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.Favorite.Favorite_Fragment"
+        android:label="fragment_favorite_"
+        tools:layout="@layout/fragment_favorite_" />
+    <fragment
+        android:id="@+id/mealList_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.MealList.MealList_Fragment"
+        android:label="fragment_meal_list_"
+        tools:layout="@layout/fragment_meal_list_" />
+    <fragment
+        android:id="@+id/search_Fragment"
+        android:name="com.example.foodplanner.OnBoarding.Search.Search_Fragment"
+        android:label="fragment_search_"
+        tools:layout="@layout/fragment_search_" />
 </navigation>

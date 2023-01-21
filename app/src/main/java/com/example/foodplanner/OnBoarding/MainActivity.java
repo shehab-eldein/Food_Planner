@@ -1,7 +1,9 @@
 package com.example.foodplanner.OnBoarding;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -26,7 +28,6 @@ View view;
         setContentView(R.layout.activity_main);
         activeNavigation();
         this.getSupportActionBar().hide();
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
         handelButtomNavigation();

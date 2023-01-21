@@ -10,10 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
     ArrayList<Category> categoryArrayList;
     Helper helperr ;
     ProgressDialog progress;
+    TextView favBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,13 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         super.onViewCreated(view, savedInstanceState);
         categoryRecyclerView = view.findViewById(R.id.Recycler_File);
         randomRecyclerView = view.findViewById(R.id.rv);
+        favBtn = view.findViewById(R.id.fav_icon);
         activeLoading();
+        favBtnClicked();
 
+    }
+    void favBtnClicked() {
+        Log.i("tt", "favBtnClicked: sdasdasdas");
     }
     void activeLoading() {
         progress = new ProgressDialog(requireContext());

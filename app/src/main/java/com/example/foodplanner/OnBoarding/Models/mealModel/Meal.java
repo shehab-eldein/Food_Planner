@@ -18,18 +18,45 @@ public class Meal {
     private String strMealThumb;
 
 
+    @ColumnInfo(name="instraction")
+    private String instraction;
+
+
+
+    @ColumnInfo(name="area")
+    private String area;
+
 
 
     public Meal(String strMeal,
                 String strMealThumb,
-                Long idMeal) {
+                Long idMeal,
+                String instraction,
+                String area) {
 
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
         this.idMeal = idMeal;
+        this.instraction=instraction;
+        this.area=area;
     }
 
     public Meal() {
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+    public String getInstraction() {
+        return instraction;
+    }
+
+    public void setInstraction(String instraction) {
+        this.instraction = instraction;
     }
     public String getStrMeal() {
         return strMeal;

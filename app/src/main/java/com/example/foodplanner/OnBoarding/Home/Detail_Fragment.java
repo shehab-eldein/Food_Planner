@@ -60,6 +60,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     ProgressDialog progress;
     DocumentReference docRef;
     MealList mealList;
+    Meal mealFav;
     DAO dao;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     }
 
     void favBtnClicked() {
-        favIcon.setOnClickListener(new View.OnClickListener() {
+       /* favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -149,9 +150,35 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
 
 
             }
-        });
+        });*/
+
+        insertFav(mealFav);
+
     }
 
+    public void insertFav(Meal meal) {
+        dao.insertFavMeal(meal).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                            }
+                        }
+                );
+
+    }
 
     void mealListClicked(){
 
@@ -204,7 +231,15 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
 
         mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),"Sunday");
 
+//        String strMeal,
+//        String strMealThumb,
+//        Long idMeal,
+//        String instraction,
+//        String area
 
+
+mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),
+        details.get(0).getStrInstructions(),details.get(0).strArea);
 
 
     }

@@ -1,6 +1,11 @@
 package com.example.foodplanner.OnBoarding.Models.detailsModel;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+
+
 public class Detail {
+
     public String idMeal;
     public String strMeal;
     public String strArea;

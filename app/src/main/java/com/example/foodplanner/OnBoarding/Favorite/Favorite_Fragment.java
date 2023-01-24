@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.UserFav;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 import com.example.foodplanner.OnBoarding.Utilites.network.DetailNetwotkingDelegate;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
 import com.example.foodplanner.R;
@@ -32,9 +36,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -47,6 +54,9 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
     NetworkHelper helperr ;
     int counter =1;
 
+    List<Meal> fav_meals;
+    DAO dao;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +67,8 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         docRef = db.collection("Fav").document(CurrentUser.getEmail());
+        RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
+        dao = roomDatabase.DAO();
         return inflater.inflate(R.layout.fragment_favorite_, container, false);
     }
 
@@ -67,6 +79,7 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
         getAllData();
         nextBtnClicked();
         prevBtnClicked();
+        getFavMealsFromRoom();
 
 
     }
@@ -88,9 +101,14 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
             public void onClick(View v) {
                checkForBtnHide();
                 Long id = Long.parseLong(idArray.get(counter));
-                helperr = new NetworkHelper(Favorite_Fragment.this,id);
-                helperr.getMealsDetails();
 
+//                helperr = new NetworkHelper(Favorite_Fragment.this,id);
+//                helperr.getMealsDetails();
+
+                instructions.setText(fav_meals.get(0).getInstraction());
+                Glide.with(mealImg.getContext()).load(fav_meals.get(0).getStrMealThumb()).into(mealImg);
+                country.setText(fav_meals.get(0).getArea());
+                mealName.setText(fav_meals.get(0).getStrMeal());
                 if (counter<idArray.size()-1 || counter == 0) {
                     counter+=1;
                 }
@@ -126,6 +144,7 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
 
     void getAllData() {
         prev.setVisibility(View.INVISIBLE);
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -160,7 +179,23 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
     @Override
     public void failDetails(String err) {
         Log.e("err", "failDetails: "+ err.toString());
+    }
+
+    void getFavMealsFromRoom(){
 
 
+        dao.getFavMeals().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<Meal>>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+            }
+            @Override
+            public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<Meal> meals) {
+                fav_meals = meals;
+            }
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+            }
+        });
     }
 }

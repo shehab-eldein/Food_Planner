@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import com.example.foodplanner.OnBoarding.Home.Home_Fragment;
 import com.example.foodplanner.OnBoarding.Home.Home_FragmentDirections;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
@@ -74,7 +75,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.Holder>  {
         Category category = categoryArrayList.get(position);
         Glide.with(holder.meal_photo.getContext()).load(category.getStrCategoryThumb()).into(holder.meal_photo);
         holder.meal_name_tv.setVisibility(View.INVISIBLE);
-        holder.favLabel.setVisibility(View.INVISIBLE);
+
         holder.meal_photo.setLayoutParams(new ViewGroup.LayoutParams(Constraints.LayoutParams.WRAP_CONTENT,Constraints.LayoutParams.WRAP_CONTENT));
         holder.meal_photo.setScaleType(ImageView.ScaleType.FIT_CENTER);
         holder.container.setLayoutParams(new ViewGroup.LayoutParams(300,250));
@@ -111,6 +112,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.Holder>  {
         @Override
         public void onClick(View view) {
             listOnClickItem.onClickIndex(getAdapterPosition());
+
             Home_FragmentDirections.ActionHomeFragmentToDetailFragment action = Home_FragmentDirections.actionHomeFragmentToDetailFragment();
             action.setID(mealArrayList.get(this.getAdapterPosition()).getIdMeal());
             Navigation.findNavController(view).navigate(action);

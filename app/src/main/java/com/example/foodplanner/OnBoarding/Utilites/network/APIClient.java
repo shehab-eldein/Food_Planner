@@ -27,7 +27,6 @@ public class APIClient {
                     .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                     .client(client)
                     .build();
-
         }
         return retrofit;
     }}

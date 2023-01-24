@@ -86,9 +86,6 @@ public class SignIn_Fragment extends Fragment {
                                 Log.i("tt", "onActivityResult: " + firebaseAuth.getCurrentUser().getEmail());
 
                                 Toast.makeText(requireContext(), "login successful", Toast.LENGTH_SHORT).show();
-
-//                                Intent intent = new Intent(requireContext(), MainActivity.class);
-//                                startActivity(intent);
                                 Navigation.findNavController(view).navigate(R.id.home_Fragment);
                             } else {
                                 Exception exception = task.getException();

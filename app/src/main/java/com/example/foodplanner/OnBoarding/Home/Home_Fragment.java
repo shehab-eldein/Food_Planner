@@ -14,16 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 import java.util.ArrayList;
 
 
+import com.example.foodplanner.OnBoarding.CurrentUser;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Utilites.network.CategoryNetworkingDelegate;
-import com.example.foodplanner.OnBoarding.Utilites.network.Helper;
+import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
 import com.example.foodplanner.OnBoarding.Utilites.network.RandomNetworkingDelegate;
 import com.example.foodplanner.OnBoarding.Views.view.MealAdapter;
 import com.example.foodplanner.OnBoarding.Views.view.OnMealClick;
@@ -40,9 +40,9 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
     MealAdapter adapter;
     ArrayList<Meal> mealArrayList;
     ArrayList<Category> categoryArrayList;
-    Helper helperr ;
+    NetworkHelper helperr ;
     ProgressDialog progress;
-    TextView favBtn;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,9 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        helperr =  new Helper(this,this);
+        helperr =  new NetworkHelper(this,this);
         helperr.getRandomMeals();
         helperr.getCategories();
-
     }
 
     @Override
@@ -68,14 +67,13 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         super.onViewCreated(view, savedInstanceState);
         categoryRecyclerView = view.findViewById(R.id.Recycler_File);
         randomRecyclerView = view.findViewById(R.id.rv);
-        favBtn = view.findViewById(R.id.fav_icon);
+        if (firebaseAuth.getCurrentUser() != null) {
+            CurrentUser.setEmail(firebaseAuth.getCurrentUser().getEmail());
+        }
         activeLoading();
-        favBtnClicked();
 
     }
-    void favBtnClicked() {
-        Log.i("tt", "favBtnClicked: sdasdasdas");
-    }
+
     void activeLoading() {
         progress = new ProgressDialog(requireContext());
         progress.setTitle("Loading");
@@ -115,7 +113,6 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         adapter = new MealAdapter(this.categoryArrayList,false);
         categoryRecyclerView.setAdapter(adapter);
         //progress.dismiss();
-
     }
 
     @Override

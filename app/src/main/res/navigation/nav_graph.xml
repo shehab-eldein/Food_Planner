@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splash_Fragment">
+    app:startDestination="@id/signs_Fragment">
     <fragment
         android:id="@+id/onBoardingBase_Fragment"
         android:name="com.example.foodplanner.OnBoarding.OnBoarding.onBoardingBase_Fragment"

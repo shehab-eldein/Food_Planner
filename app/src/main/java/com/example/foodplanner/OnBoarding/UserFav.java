@@ -1,33 +1,29 @@
 package com.example.foodplanner.OnBoarding;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UserFav {
+public class UserFav implements Serializable {
 
-    private String email;
-    private ArrayList<Long> favMeals ;
+
+    private ArrayList<String> favMeals ;
+
+
+
 
     public UserFav() {
     }
 
-    public UserFav(String email, ArrayList<Long> favMeals) {
-            this.email = email;
+    public UserFav( ArrayList<String> favMeals) {
+
             this.favMeals = favMeals;
         }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public ArrayList<Long> getFavMeals() {
+        public ArrayList<String> getFavMeals() {
         return favMeals;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFavMeals(ArrayList<Long> favMeals) {
+    public void setFavMeals(ArrayList<String> favMeals) {
         this.favMeals = favMeals;
     }
 }

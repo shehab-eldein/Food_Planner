@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class Helper  {
+public class NetworkHelper {
     RandomNetworkingDelegate randomDelegate;
     CategoryNetworkingDelegate categoryDelegate;
     DetailNetwotkingDelegate detailDelegate;
@@ -28,15 +28,16 @@ public class Helper  {
     Long id;
 
 
-    public Helper(RandomNetworkingDelegate randomDelegate,CategoryNetworkingDelegate categoryDelegate) {
+    public NetworkHelper(RandomNetworkingDelegate randomDelegate, CategoryNetworkingDelegate categoryDelegate) {
         this.randomDelegate = randomDelegate;
         this.categoryDelegate = categoryDelegate;
     }
 
-    public Helper(DetailNetwotkingDelegate detailDelegate,Long id) {
+    public NetworkHelper(DetailNetwotkingDelegate detailDelegate, Long id) {
         this.detailDelegate = detailDelegate;
         this.id = id;
     }
+
 
 
     public void getRandomMeals() {

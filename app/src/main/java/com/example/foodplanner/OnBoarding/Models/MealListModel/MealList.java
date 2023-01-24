@@ -1,15 +1,30 @@
-package com.example.foodplanner.OnBoarding.Models.mealModel;
+package com.example.foodplanner.OnBoarding.Models.MealListModel;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName ="favourite")
-public class Meal {
+import javax.annotation.Nonnull;
+
+@Entity(tableName ="mealList")
+public class MealList {
+
+    private String day;
+
+   public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @ColumnInfo(name = "id")
+   @PrimaryKey
+    private Integer id;
 
     @ColumnInfo(name = "idMeal")
-    @PrimaryKey
-    private Long idMeal;
+   private Long idMeal;
 
     @ColumnInfo(name = "strMeal")
     private String strMeal;
@@ -19,18 +34,29 @@ public class Meal {
 
 
 
-
-    public Meal(String strMeal,
+    public MealList(String strMeal,
                 String strMealThumb,
-                Long idMeal) {
+                Long idMeal,
+                    String day) {
 
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
         this.idMeal = idMeal;
+        this.day=day;
     }
 
-    public Meal() {
+    public MealList() {
     }
+
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
     public String getStrMeal() {
         return strMeal;
     }

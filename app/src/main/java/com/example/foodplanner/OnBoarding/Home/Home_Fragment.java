@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +24,8 @@ import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Utilites.network.CategoryNetworkingDelegate;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
 import com.example.foodplanner.OnBoarding.Utilites.network.RandomNetworkingDelegate;
-import com.example.foodplanner.OnBoarding.Views.view.MealAdapter;
-import com.example.foodplanner.OnBoarding.Views.view.OnMealClick;
+import com.example.foodplanner.OnBoarding.View.viewMeal.MealAdapter;
+import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
 import com.example.foodplanner.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -1,6 +1,5 @@
-package com.example.foodplanner.OnBoarding.Views.view;
+package com.example.foodplanner.OnBoarding.View.viewMeal;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import com.example.foodplanner.OnBoarding.Home.Home_Fragment;
 import com.example.foodplanner.OnBoarding.Home.Home_FragmentDirections;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
@@ -30,7 +28,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.Holder>  {
     public boolean isRandom;
 
 
-    public MealAdapter(ArrayList<Meal> list, OnMealClick listOnClickItem,boolean isRandom) {
+    public MealAdapter(ArrayList<Meal> list, OnMealClick listOnClickItem, boolean isRandom) {
         this.mealArrayList = list;
         this.listOnClickItem = listOnClickItem;
         this.isRandom = isRandom;

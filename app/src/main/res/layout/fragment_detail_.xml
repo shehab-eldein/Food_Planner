@@ -13,6 +13,19 @@
         android:layout_height="match_parent"
         android:background="@color/lightGrayBackGround">
 
+
+        <TextView
+            android:id="@+id/meal_list"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="44dp"
+            android:background="@drawable/roundstyle"
+            android:backgroundTint="@color/DarkGraybackground"
+            android:padding="4dp"
+            app:drawableTopCompat="@drawable/ic_baseline_add_chart_24"
+            app:layout_constraintStart_toEndOf="@+id/cardView2"
+            app:layout_constraintTop_toTopOf="@+id/cardView2" />
+
         <TextView
             android:id="@+id/fav_icon"
             android:layout_width="30dp"

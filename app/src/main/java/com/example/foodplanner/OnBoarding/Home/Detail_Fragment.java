@@ -17,10 +17,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.OnBoarding.CurrentUser;
+import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
+import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.UserFav;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 import com.example.foodplanner.OnBoarding.Utilites.network.DetailNetwotkingDelegate;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
+import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
 import com.example.foodplanner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,21 +42,30 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 
 public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegate {
 
     Long id;
     NetworkHelper helperr ;
-    TextView mealName,mealArea,mealInstructions,favIcon;
+    TextView mealName,mealArea,mealInstructions,favIcon,meal_list;
     ImageView mealImage;
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     ProgressDialog progress;
     DocumentReference docRef;
+    MealList mealList;
+    DAO dao;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
+        dao = roomDatabase.DAO();
     }
 
     @Override
@@ -72,6 +86,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         helperr = new NetworkHelper(this,id);
         helperr.getMealsDetails();
         favBtnClicked();
+        mealListClicked();
 
     }
 
@@ -136,6 +151,20 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
             }
         });
     }
+
+
+    void mealListClicked(){
+
+        meal_list.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        insertMealList(mealList);
+                    }
+                }
+        );
+    }
+
     void connectDesign(View view) {
         mealName = view.findViewById(R.id.meal_Name);
         mealArea = view.findViewById(R.id.detail_mealArea);
@@ -143,6 +172,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         mealInstructions = view.findViewById(R.id.instructionLabel);
         mealVidio = view.findViewById(R.id.videoView);
         favIcon = view.findViewById(R.id.fav_icon);
+        meal_list=view.findViewById(R.id.meal_list);
     }
     void activeLoading() {
         progress = new ProgressDialog(requireContext());
@@ -169,10 +199,43 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
                 youTubePlayer.loadVideo(videoId, 0);
             }
         });
+
+        /////todo drop list
+
+        mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),"Sunday");
+
+
+
+
     }
 
     @Override
     public void failDetails(String err) {
+
+    }
+
+
+    public void insertMealList(MealList mealList) {
+        dao.insertListMeal(mealList).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                            }
+                        }
+                );
 
     }
 }

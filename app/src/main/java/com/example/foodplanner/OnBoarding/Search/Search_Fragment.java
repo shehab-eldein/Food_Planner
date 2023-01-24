@@ -170,10 +170,7 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
                     recyclerView_result.setAdapter(searchAdapter);
 
                 }
-                ,
-
-
-                error -> Log.i(TAG, "error: " + error.toString()),
+                , error -> Log.i(TAG, "error: " + error.toString()),
                 () -> Log.i(TAG, "completed ")
 
         );

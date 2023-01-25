@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 
 import com.example.foodplanner.OnBoarding.CurrentUser;
+import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Utilites.network.CategoryNetworkingDelegate;
@@ -40,7 +41,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
     ArrayList<Meal> mealArrayList;
     ArrayList<Category> categoryArrayList;
     NetworkHelper helperr ;
-    ProgressDialog progress;
+
 
 
     @Override
@@ -69,17 +70,11 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         if (firebaseAuth.getCurrentUser() != null) {
             CurrentUser.setEmail(firebaseAuth.getCurrentUser().getEmail());
         }
-        activeLoading();
+        Loading.activeLoading(requireContext());
 
     }
 
-    void activeLoading() {
-        progress = new ProgressDialog(requireContext());
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        progress.show();
-    }
+
     @Override
     public void succsessRandoms(ArrayList<Meal> meals) {
         mealArrayList = meals;
@@ -89,7 +84,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         adapter = new MealAdapter(this.mealArrayList, Home_Fragment.this,true);
         randomRecyclerView.setAdapter(adapter);
-        progress.dismiss();
+        Loading.dismiss();
     }
 
     @Override

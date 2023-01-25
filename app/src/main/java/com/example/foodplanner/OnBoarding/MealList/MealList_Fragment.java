@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     List<String>days_list;
 
     RecyclerView days_rv;
-    String dayFilter=new String();
+    String dayFilter="Sunday";
 
 
     @Override
@@ -69,6 +68,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getMealList();
         return inflater.inflate(R.layout.fragment_meal_list_, container, false);
     }
 
@@ -76,7 +76,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mealList_rv = view.findViewById(R.id.recycler_meal_list);
+        mealList_rv = view.findViewById(R.id.recycler_Fav);
 //        mealList_rv.setVisibility(View.GONE);
         days_rv=view.findViewById(R.id.recycler_days);
         days_list.add("Saturday");
@@ -102,10 +102,13 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     @Override
     public void onClickDay(String dayName) {
 
-
         dayFilter=dayName;
-        Log.i("TAGggggggggggggggggggggggggggggggggggg", "onClick:   ffffffffffffffff  "+dayFilter);
+        getMealList();
 
+
+
+    }
+    void getMealList() {
         dao.getListMeals(dayFilter)
 
                 .subscribeOn(Schedulers.io()).
@@ -123,7 +126,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
                         mealList_rv.setHasFixedSize(true);
                         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
                         mealList_rv.setLayoutManager(linearLayoutManager);
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
                         mealListAdapter=new MealListAdapter(mealList_meals,MealList_Fragment.this);
                         mealList_rv.setAdapter(mealListAdapter);
                     }
@@ -133,10 +136,6 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
 
                     }
                 });
-
-
-
-
     }
 
     @Override

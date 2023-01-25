@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.OnBoarding.CurrentUser;
+import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
@@ -57,7 +58,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ProgressDialog progress;
+
     DocumentReference docRef;
     MealList mealList;
     Meal mealFav;
@@ -73,7 +74,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        activeLoading();
+        Loading.activeLoading(requireContext());
         return inflater.inflate(R.layout.fragment_detail_, container, false);
     }
 
@@ -203,13 +204,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         favIcon = view.findViewById(R.id.fav_icon);
         meal_list=view.findViewById(R.id.meal_list);
     }
-    void activeLoading() {
-        progress = new ProgressDialog(requireContext());
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        progress.show();
-    }
+
 
 
     @Override
@@ -219,7 +214,7 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         mealArea.setText(details.get(0).getStrArea());
         mealInstructions.setText(details.get(0).getStrInstructions());
         Glide.with(mealImage.getContext()).load(details.get(0).getStrMealThumb()).into(mealImage);
-        progress.dismiss();
+       Loading.dismiss();
         String[] separated = details.get(0).strYoutube.split("=");
         mealVidio.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override

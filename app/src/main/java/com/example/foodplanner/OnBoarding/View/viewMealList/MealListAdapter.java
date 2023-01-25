@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.OnBoarding.Favorite.Favorite_Fragment;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
+import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.R;
 
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.List;
 
 public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder> {
     private List<MealList> meal_list;
+    private List<Meal> fav_meals;
+    Boolean isFav = false;
+
     ///////////////////////////
     private OnMeallistClickListener onMeallistClickListener;
 
@@ -28,6 +33,11 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
         /////////////////////////////
         this.onMeallistClickListener=onMeallistClickListener;
 
+    }
+
+    public MealListAdapter(List<Meal> fav_meals, Favorite_Fragment favorite_fragment) {
+        this.fav_meals = fav_meals;
+        isFav = true;
     }
 
     @NonNull
@@ -41,25 +51,33 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
-        MealList meal = meal_list.get(position);
+        if (isFav) {
+            Meal favMeal = fav_meals.get(position);
+            holder.meal_name_tv.setText(favMeal.getStrMeal());
+            Glide.with(holder.meal_photo.getContext()).load(favMeal.getStrMealThumb()).into(holder.meal_photo);
+
+        }else {
+            MealList meal = meal_list.get(position);
+            holder.meal_name_tv.setText(meal.getStrMeal());
+            Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
+            ///////////////////////////////////
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onMeallistClickListener.onClickMeal(meal,position);
+                }
+            });
+        }
 
 
-        holder.meal_name_tv.setText(meal.getStrMeal());
-       
-        holder.meal_day.setText(meal.getDay());
-        Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
-        ///////////////////////////////////
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onMeallistClickListener.onClickMeal(meal,position);
-            }
-        });
 
     }
 
     @Override
     public int getItemCount() {
+        if (isFav) {
+            return fav_meals.size();
+        }
         return meal_list.size();
     }
 
@@ -77,7 +95,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
 
             meal_photo = itemView.findViewById(R.id.meal_image);
             meal_name_tv=itemView.findViewById(R.id.meal_name);
-            meal_day=itemView.findViewById(R.id.meal_day);
+
 //////////////////////////////////////
             delete=itemView.findViewById(R.id.delete_btn);
         }

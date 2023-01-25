@@ -39,7 +39,7 @@
                 android:id="@+id/meal_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/roundstyle"
                 android:backgroundTint="@color/DarkGraybackground"
@@ -47,53 +47,22 @@
                 android:gravity="start|left|center_vertical"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/delete_btn"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="Pizza" />
-
-            <TextView
-                android:id="@+id/meal_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="76dp"
-                android:layout_weight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/DarkGraybackground"
-                android:drawableLeft="@drawable/ic_baseline_query_builder_24"
-                android:gravity="start|left|center_vertical"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="Pizza" />
-
-            <TextView
-                android:id="@+id/fav_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="@color/DarkGraybackground"
-                android:padding="4dp"
-                app:drawableTopCompat="@drawable/ic_baseline_favorite_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/delete_btn"
-                android:layout_width="92dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="28dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="@color/DarkGraybackground"
                 android:text="Delete"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/meal_day"
-                app:layout_constraintEnd_toStartOf="@+id/fav_icon"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.188" />
+                app:layout_constraintBottom_toBottomOf="@+id/meal_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/meal_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

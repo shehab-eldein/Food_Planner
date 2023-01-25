@@ -33,8 +33,8 @@
             android:text="Today is : "
             android:textColor="@color/GrayFont"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_meal_list"
-            app:layout_constraintStart_toStartOf="@+id/recycler_meal_list" />
+            app:layout_constraintBottom_toTopOf="@+id/recycler_Fav"
+            app:layout_constraintStart_toStartOf="@+id/recycler_Fav" />
 
         <ImageView
             android:id="@+id/imageView11"
@@ -70,7 +70,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView11" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_meal_list"
+            android:id="@+id/recycler_Fav"
             android:layout_width="366dp"
             android:layout_height="250dp"
             android:layout_marginBottom="50dp"

@@ -13,8 +13,9 @@ import com.example.foodplanner.R;
 
 import java.util.List;
 
-public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder>{
+public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder>{//} implements  OnDayClickListener {
     private List<String> days;
+   // private   Context context;
     private  OnDayClickListener onDayClickListener;
 
 
@@ -27,6 +28,14 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder>{
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        days_list=new ArrayList<String>();
+//        days_list.add("Saturday");
+//        days_list.add("Sunday");
+//        days_list.add("Monday");
+//        days_list.add("Tuesday");
+//        days_list.add("Wendnesday");
+//        days_list.add("Thursday");
+//        days_list.add("Friday");
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_row, parent, false);
 
@@ -42,12 +51,30 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder>{
         holder.day_name.setText(day);
         holder.itemView.setTag(day);
 
+//        holder.day_name.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onDayClickListener.onClickDay(day);
+////                Toast.makeText( "You clicked " +day + " on row number " , Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
+
+
     }
 
     @Override
     public int getItemCount() {
         return  days.size();
     }
+//
+//    @Override
+//    public void onClickDay(String dayName) {
+//        Log.i("tttttttt", "onClickDay: You clicked " +dayName + " on row number " );
+//
+//    }
+
 
     public class Holder extends RecyclerView.ViewHolder implements  View.OnClickListener {
 
@@ -64,6 +91,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder>{
         public void onClick(View view) {
             onDayClickListener.onClickDay(view.getTag().toString());
 
+            Log.i("TAGggggggggggggggggggggggggggggggggggg", "onClick:   oooooo  "+view.getTag().toString());
         }
     }
 

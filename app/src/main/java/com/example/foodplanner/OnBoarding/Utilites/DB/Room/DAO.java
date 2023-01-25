@@ -44,6 +44,15 @@ public interface DAO {
 
 
 
+    @Query("DELETE FROM favourite")
+    Completable deleteAllFav();
+
+    @Query("DELETE FROM mealList")
+    Completable deleteAllMealList();
+
+
+
+
 
 
 }

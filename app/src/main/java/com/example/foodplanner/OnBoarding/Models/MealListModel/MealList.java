@@ -13,19 +13,13 @@ import javax.annotation.Nonnull;
 @Entity(tableName ="mealList")
 public class MealList  {
 
-    private String day;
-
-   public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     @ColumnInfo(name = "id")
-   @PrimaryKey
+    @PrimaryKey
     private Integer id;
+
+    @ColumnInfo(name = "day")
+    @Nonnull
+    private String day;
 
     @ColumnInfo(name = "idMeal")
    private Long idMeal;
@@ -39,8 +33,8 @@ public class MealList  {
 
 
     public MealList(String strMeal,
-                String strMealThumb,
-                Long idMeal,
+                    String strMealThumb,
+                    Long idMeal,
                     String day) {
 
         this.strMeal = strMeal;
@@ -52,6 +46,13 @@ public class MealList  {
     public MealList() {
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getDay() {
         return day;

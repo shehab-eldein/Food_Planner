@@ -19,11 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.OnBoarding.Models.Ingredient.Ingredient;
-import com.example.foodplanner.OnBoarding.Models.Ingredient.RootMealIngrad;
+import com.example.foodplanner.OnBoarding.Models.Ingredient.RootMealIngredient;
 import com.example.foodplanner.OnBoarding.Utilites.network.APIClient;
 import com.example.foodplanner.OnBoarding.Utilites.network.APIinterfaceIngredient;
 import com.example.foodplanner.OnBoarding.View.viewIngredient.IngredientAdapter;
-import com.example.foodplanner.OnBoarding.View.viewIngredient.OnMealClick;
 import com.example.foodplanner.OnBoarding.View.viewSearch.SearchAdapter;
 import com.example.foodplanner.R;
 
@@ -38,7 +37,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Search_Fragment extends Fragment {//implements OnMealClick {
     IngredientAdapter ingredientAdapter;
@@ -80,33 +85,37 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
         recyclerView_result=view.findViewById(R.id.search_reslut_rv);
         recyclerView_result.setVisibility(View.GONE);
 
+
+
         Retrofit apiClient = APIClient.getClient();
         APIinterfaceIngredient apiInterface = apiClient.create(APIinterfaceIngredient.class);
-        Call<RootMealIngrad> call = apiInterface.getingrdiants();
-        call.enqueue(new Callback<RootMealIngrad>() {
-            @Override
-            public void onResponse(Call<RootMealIngrad> call, Response<RootMealIngrad> response) {
-
-                if (response.isSuccessful()) {
-                    ingredients = response.body().getMeals();
 
 
-                    recyclerView.setHasFixedSize(true);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                    ingredientAdapter = new IngredientAdapter(ingredients);//, Search_Fragment.this);
-                    recyclerView.setAdapter(ingredientAdapter);
-                }
-            }
+        apiInterface.getingrdiants()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<RootMealIngredient>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-            @Override
-            public void onFailure(Call<RootMealIngrad> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
-                Toast.makeText(requireContext(), "fail", Toast.LENGTH_SHORT);
-            }
-        });
+                    }
 
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull RootMealIngredient rootMealIngredient) {
+                        ingredients = rootMealIngredient.getMeals();
+                        recyclerView.setHasFixedSize(true);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+                        recyclerView.setLayoutManager(linearLayoutManager);
+                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+                        ingredientAdapter = new IngredientAdapter(ingredients);//, Search_Fragment.this);
+                        recyclerView.setAdapter(ingredientAdapter);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
 
 
 
@@ -124,7 +133,7 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if(s.length()==0) {
-                            searchAdapter = new SearchAdapter(new ArrayList<>());//, Search_Fragment.this);
+                            searchAdapter = new SearchAdapter(new ArrayList<>());
                             recyclerView_result.setAdapter(searchAdapter);
                         }
                         else
@@ -166,7 +175,7 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
                     recyclerView_result.setLayoutManager(linearLayoutManagerSearch);
                     linearLayoutManagerSearch.setOrientation(RecyclerView.VERTICAL);
 
-                    searchAdapter= new SearchAdapter(ingredientQuery);//, Search_Fragment.this);
+                    searchAdapter= new SearchAdapter(ingredientQuery);
                     recyclerView_result.setAdapter(searchAdapter);
 
                 }
@@ -176,8 +185,5 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
         );
 
     }
-//    @Override
-//    public void onClickIndex(int position) {
-//
-//    }
+
 }

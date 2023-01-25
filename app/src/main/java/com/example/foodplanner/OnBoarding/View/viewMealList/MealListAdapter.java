@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,17 +20,20 @@ import java.util.List;
 
 public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder> {
     private List<MealList> meal_list;
+    ///////////////////////////
+    private OnMeallistClickListener onMeallistClickListener;
 
-
-    public MealListAdapter(List<MealList> meal_list){//}, OnFavClickListener listOnClickItem) {
+    public MealListAdapter(List<MealList> meal_list,OnMeallistClickListener onMeallistClickListener){
         this.meal_list=meal_list;
+        /////////////////////////////
+        this.onMeallistClickListener=onMeallistClickListener;
 
     }
 
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_list_row, parent, false);
 
         return new Holder(view);
     }
@@ -39,39 +43,18 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
     public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
         MealList meal = meal_list.get(position);
 
-       /* switch(meal.getDay()) {
-            case 1:
-                holder.meal_day.setText("Saturday");
-                break;
 
-            case 2:
-                holder.meal_day.setText("Sunday");
-                break;
-
-            case 3:
-                holder.meal_day.setText("Monday");
-                break;
-
-            case 4:
-                holder.meal_day.setText("Tuesday");
-                break;
-
-            case 5:
-                holder.meal_day.setText("Wednesday");
-                break;
-
-            case 6:
-                holder.meal_day.setText("Thursday");
-                break;
-
-            case 7:
-                holder.meal_day.setText("Friday");
-                break;
-        }
-*/
         holder.meal_name_tv.setText(meal.getStrMeal());
+       
+        holder.meal_day.setText(meal.getDay());
         Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
-
+        ///////////////////////////////////
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onMeallistClickListener.onClickMeal(meal,position);
+            }
+        });
 
     }
 
@@ -82,17 +65,21 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
 
     public class Holder extends RecyclerView.ViewHolder  {
         public ImageView meal_photo;
+        public TextView  meal_name_tv,meal_day;
 
-        public TextView  meal_name_tv;
+
+        ////////////////
+        public Button delete;
+
 
         public Holder(@NonNull View itemView) {
             super(itemView);
+
             meal_photo = itemView.findViewById(R.id.meal_image);
             meal_name_tv=itemView.findViewById(R.id.meal_name);
-
-
-
-
+            meal_day=itemView.findViewById(R.id.meal_day);
+//////////////////////////////////////
+            delete=itemView.findViewById(R.id.delete_btn);
         }
 
 

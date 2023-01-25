@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,10 +18,11 @@ import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
+
 import com.example.foodplanner.OnBoarding.View.viewMealList.DayAdapter;
 import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
 import com.example.foodplanner.OnBoarding.View.viewMealList.OnDayClickListener;
-
+import com.example.foodplanner.OnBoarding.View.viewMealList.OnMeallistClickListener;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;
@@ -35,8 +35,10 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import io.reactivex.rxjava3.core.CompletableObserver;
 
-public class MealList_Fragment extends Fragment implements  OnDayClickListener{
+
+public class MealList_Fragment extends Fragment implements OnDayClickListener, OnMeallistClickListener {
     RecyclerView mealList_rv;
     MealListAdapter mealListAdapter;
     List<MealList> mealList_meals;
@@ -48,7 +50,7 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
     List<String>days_list;
 
     RecyclerView days_rv;
-    String dayFilter;
+    String dayFilter=new String();
 
 
     @Override
@@ -59,7 +61,6 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
         dao = roomDatabase.DAO();
 
         days_list=new ArrayList<String>();
-        getDayList();
 
 
     }
@@ -89,6 +90,8 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
         LinearLayoutManager layoutManager=new LinearLayoutManager(requireContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         days_rv.setLayoutManager(layoutManager);
+
+
         dayAdapter=new DayAdapter(days_list,this);
         days_rv.setAdapter(dayAdapter);
 
@@ -99,18 +102,12 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
     @Override
     public void onClickDay(String dayName) {
 
+
         dayFilter=dayName;
-        getDayList();
+        Log.i("TAGggggggggggggggggggggggggggggggggggg", "onClick:   ffffffffffffffff  "+dayFilter);
 
-
-
-
-    }
-    void getDayList() {
-        if (dayFilter == null ) {
-            dayFilter = "Sunday";
-        }
         dao.getListMeals(dayFilter)
+
                 .subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<MealList>>() {
@@ -126,8 +123,8 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
                         mealList_rv.setHasFixedSize(true);
                         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
                         mealList_rv.setLayoutManager(linearLayoutManager);
-                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                        mealListAdapter=new MealListAdapter(mealList_meals);
+                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        mealListAdapter=new MealListAdapter(mealList_meals,MealList_Fragment.this);
                         mealList_rv.setAdapter(mealListAdapter);
                     }
 
@@ -138,5 +135,31 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
                 });
 
 
+
+
+    }
+
+    @Override
+    public void onClickMeal(MealList mealList, int position) {
+        dao.deleteListMeal(mealList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mealList_meals.remove(mealList);
+                        mealListAdapter.notifyItemRemoved(position);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
     }
 }

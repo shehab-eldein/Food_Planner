@@ -25,19 +25,23 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
     private List<Meal> fav_meals;
     Boolean isFav = false;
 
-    ///////////////////////////
     private OnMeallistClickListener onMeallistClickListener;
+
+    private OnClickMealListenerFav onClickMealListenerFav;
 
     public MealListAdapter(List<MealList> meal_list,OnMeallistClickListener onMeallistClickListener){
         this.meal_list=meal_list;
-        /////////////////////////////
+
         this.onMeallistClickListener=onMeallistClickListener;
 
     }
 
-    public MealListAdapter(List<Meal> fav_meals, Favorite_Fragment favorite_fragment) {
+    public MealListAdapter(List<Meal> fav_meals,
+                           Favorite_Fragment favorite_fragment,
+                           OnClickMealListenerFav onClickMealListenerFav) {
         this.fav_meals = fav_meals;
         isFav = true;
+        this.onClickMealListenerFav=onClickMealListenerFav;
     }
 
     @NonNull
@@ -55,6 +59,12 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
             Meal favMeal = fav_meals.get(position);
             holder.meal_name_tv.setText(favMeal.getStrMeal());
             Glide.with(holder.meal_photo.getContext()).load(favMeal.getStrMealThumb()).into(holder.meal_photo);
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickMealListenerFav.onClickMealFav(favMeal,position);
+                }
+            });
 
         }else {
             MealList meal = meal_list.get(position);
@@ -64,7 +74,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onMeallistClickListener.onClickMeal(meal,position);
+                    onMeallistClickListener.onClickMealList(meal,position);
                 }
             });
         }

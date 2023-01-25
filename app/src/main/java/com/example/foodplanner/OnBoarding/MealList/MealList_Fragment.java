@@ -139,7 +139,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     }
 
     @Override
-    public void onClickMeal(MealList mealList, int position) {
+    public void onClickMealList(MealList mealList, int position) {
         dao.deleteListMeal(mealList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

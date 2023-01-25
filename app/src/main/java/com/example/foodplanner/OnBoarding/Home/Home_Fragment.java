@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ import com.example.foodplanner.OnBoarding.CurrentUser;
 import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 import com.example.foodplanner.OnBoarding.Utilites.network.CategoryNetworkingDelegate;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
 import com.example.foodplanner.OnBoarding.Utilites.network.RandomNetworkingDelegate;
@@ -30,6 +33,11 @@ import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
 import com.example.foodplanner.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class Home_Fragment extends Fragment implements OnMealClick, RandomNetworkingDelegate, CategoryNetworkingDelegate {
@@ -42,8 +50,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
     ArrayList<Category> categoryArrayList;
     NetworkHelper helperr ;
 
-
-
+    Button logout_btn;
+    DAO dao;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +66,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
+        dao = roomDatabase.DAO();
         return inflater.inflate(R.layout.fragment_home_, container, false);
     }
 
@@ -72,6 +81,32 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomNetwor
         }
         Loading.activeLoading(requireContext());
 
+
+        logout_btn=view.findViewById(R.id.logOut_btn);
+        logout_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dao.deleteAllMealList()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                            }
+                        });
+            }
+        });
     }
 
 

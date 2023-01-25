@@ -25,6 +25,7 @@ import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 import com.example.foodplanner.OnBoarding.Utilites.network.DetailNetwotkingDelegate;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
 import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
+import com.example.foodplanner.OnBoarding.View.viewMealList.OnClickMealListenerFav;
 import com.example.foodplanner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,12 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class Favorite_Fragment extends Fragment  {
+public class Favorite_Fragment extends Fragment implements OnClickMealListenerFav {
     RecyclerView fav_rv;
     MealListAdapter fav_Adapter;
     List<Meal> fav_meals;
@@ -50,6 +52,9 @@ public class Favorite_Fragment extends Fragment  {
     ArrayList<String> idArray= new ArrayList<>();
     NetworkHelper helperr ;
     DAO dao;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,12 +81,6 @@ public class Favorite_Fragment extends Fragment  {
 
 
     }
-
-
-
-
-
-
 
     void connectDesign(View view) {
         fav_rv = view.findViewById(R.id.recycler_Fav);
@@ -112,9 +111,6 @@ public class Favorite_Fragment extends Fragment  {
     }
 
 
-
-
-
     void getFavMealsFromRoom(){
 
 
@@ -131,7 +127,7 @@ public class Favorite_Fragment extends Fragment  {
                 LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
                 fav_rv.setLayoutManager(linearLayoutManager);
                 linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                fav_Adapter=new MealListAdapter(fav_meals, Favorite_Fragment.this);
+                fav_Adapter=new MealListAdapter(fav_meals, Favorite_Fragment.this,Favorite_Fragment.this);
                 fav_rv.setAdapter(fav_Adapter);
 
             }
@@ -141,5 +137,30 @@ public class Favorite_Fragment extends Fragment  {
                 Log.i("mealsss", "onError: "+e.getMessage());
             }
         });
+    }
+
+
+    @Override
+    public void onClickMealFav(Meal meal, int position) {
+        dao.deleteFavMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        fav_meals.remove(meal);
+                        fav_Adapter.notifyItemRemoved(position);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
     }
 }

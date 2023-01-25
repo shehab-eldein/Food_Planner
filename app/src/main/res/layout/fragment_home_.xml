@@ -98,6 +98,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+
+        <Button
+            android:id="@+id/logOut_btn"
+            android:layout_width="92dp"
+            android:layout_height="48dp"
+
+            android:text="Log Out"
+            android:textSize="10sp"
+
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Recycler_File" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

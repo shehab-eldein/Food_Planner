@@ -30,9 +30,7 @@ public class Meal {
 
     public Meal(String strMeal,
                 String strMealThumb,
-                Long idMeal,
-                String instraction,
-                String area) {
+                Long idMeal,String instraction,String area) {
 
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;
@@ -44,7 +42,7 @@ public class Meal {
     public Meal() {
     }
 
-    public String getArea() {
+   public String getArea() {
         return area;
     }
 
@@ -58,6 +56,8 @@ public class Meal {
     public void setInstraction(String instraction) {
         this.instraction = instraction;
     }
+
+
     public String getStrMeal() {
         return strMeal;
     }

@@ -48,7 +48,7 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
     List<String>days_list;
 
     RecyclerView days_rv;
-    String dayFilter=new String();
+    String dayFilter;
 
 
     @Override
@@ -59,6 +59,7 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
         dao = roomDatabase.DAO();
 
         days_list=new ArrayList<String>();
+        getDayList();
 
 
     }
@@ -88,10 +89,9 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
         LinearLayoutManager layoutManager=new LinearLayoutManager(requireContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         days_rv.setLayoutManager(layoutManager);
-
-
         dayAdapter=new DayAdapter(days_list,this);
         days_rv.setAdapter(dayAdapter);
+
 
     }
 
@@ -100,10 +100,17 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
     public void onClickDay(String dayName) {
 
         dayFilter=dayName;
+        getDayList();
 
 
+
+
+    }
+    void getDayList() {
+        if (dayFilter == null ) {
+            dayFilter = "Sunday";
+        }
         dao.getListMeals(dayFilter)
-
                 .subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<MealList>>() {
@@ -119,7 +126,7 @@ public class MealList_Fragment extends Fragment implements  OnDayClickListener{
                         mealList_rv.setHasFixedSize(true);
                         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
                         mealList_rv.setLayoutManager(linearLayoutManager);
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
                         mealListAdapter=new MealListAdapter(mealList_meals);
                         mealList_rv.setAdapter(mealListAdapter);
                     }

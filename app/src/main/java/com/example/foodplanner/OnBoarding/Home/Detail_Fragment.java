@@ -126,10 +126,10 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     }
 
     void favBtnClicked() {
-       /* favIcon.setOnClickListener(new View.OnClickListener() {
+        favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                /*docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -145,14 +145,16 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
                             Log.d("FireStore", "Failed with: ", task.getException());
                         }
                     }
+
+
                 });
-
-
+*/
+                insertFav(mealFav);
 
             }
-        });*/
+        });
 
-        insertFav(mealFav);
+
 
     }
 
@@ -231,15 +233,10 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
 
         mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),"Sunday");
 
-//        String strMeal,
-//        String strMealThumb,
-//        Long idMeal,
-//        String instraction,
-//        String area
 
 
-mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),
-        details.get(0).getStrInstructions(),details.get(0).strArea);
+
+       mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),details.get(0).strInstructions,details.get(0).strArea);
 
 
     }
@@ -258,16 +255,19 @@ mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf
                             @Override
                             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
+                                Log.i("mealsss", "onSub: ");
                             }
 
                             @Override
                             public void onComplete() {
 
+                                Log.i("mealsss", "onComplete: ");
                             }
 
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
+                                Log.i("mealsss", "onEror: "+e.getMessage());
                             }
                         }
                 );

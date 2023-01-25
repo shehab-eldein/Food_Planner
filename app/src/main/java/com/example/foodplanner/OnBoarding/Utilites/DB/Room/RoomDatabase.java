@@ -8,7 +8,7 @@ import androidx.room.Room;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 
-@Database(entities = {Meal.class, MealList.class}, version = 2)
+@Database(entities = {Meal.class, MealList.class}, version = 3)
 public abstract class RoomDatabase extends androidx.room.RoomDatabase {
     private static RoomDatabase instance = null;
 
@@ -16,7 +16,7 @@ public abstract class RoomDatabase extends androidx.room.RoomDatabase {
 
     public static synchronized RoomDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), RoomDatabase.class, "FPRoom")
+            instance = Room.databaseBuilder(context.getApplicationContext(),RoomDatabase.class, "FPRoom")
                     .fallbackToDestructiveMigration()
                     .build();
         }

@@ -29,7 +29,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_list_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_row, parent, false);
 
         return new Holder(view);
     }
@@ -70,8 +70,6 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
         }
 */
         holder.meal_name_tv.setText(meal.getStrMeal());
-       
-        holder.meal_day.setText(meal.getDay());
         Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
 
 
@@ -85,14 +83,15 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
     public class Holder extends RecyclerView.ViewHolder  {
         public ImageView meal_photo;
 
-        public TextView  meal_name_tv,meal_day;
+        public TextView  meal_name_tv;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
-
             meal_photo = itemView.findViewById(R.id.meal_image);
             meal_name_tv=itemView.findViewById(R.id.meal_name);
-            meal_day=itemView.findViewById(R.id.meal_day);
+
+
+
 
         }
 

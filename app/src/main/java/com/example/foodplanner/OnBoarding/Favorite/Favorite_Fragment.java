@@ -66,7 +66,7 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        docRef = db.collection("Fav").document(CurrentUser.getEmail());
+       // docRef = db.collection("Fav").document(CurrentUser.getEmail());
         RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
         dao = roomDatabase.DAO();
         return inflater.inflate(R.layout.fragment_favorite_, container, false);
@@ -76,7 +76,7 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         connectDesign(view);
-        getAllData();
+        //getAllData();
         nextBtnClicked();
         prevBtnClicked();
         getFavMealsFromRoom();
@@ -100,16 +100,18 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
             @Override
             public void onClick(View v) {
                checkForBtnHide();
-                Long id = Long.parseLong(idArray.get(counter));
+               // Long id = Long.parseLong(idArray.get(counter));
 
 //                helperr = new NetworkHelper(Favorite_Fragment.this,id);
 //                helperr.getMealsDetails();
 
-                instructions.setText(fav_meals.get(0).getInstraction());
-                Glide.with(mealImg.getContext()).load(fav_meals.get(0).getStrMealThumb()).into(mealImg);
-                country.setText(fav_meals.get(0).getArea());
-                mealName.setText(fav_meals.get(0).getStrMeal());
-                if (counter<idArray.size()-1 || counter == 0) {
+
+                country.setText(fav_meals.get(counter).getArea());
+                instructions.setText(fav_meals.get(counter).getInstraction());
+                Glide.with(mealImg.getContext()).load(fav_meals.get(counter).getStrMealThumb()).into(mealImg);
+                mealName.setText(fav_meals.get(counter).getStrMeal());
+
+                if (counter<fav_meals.size()-1 || counter == 0) {
                     counter+=1;
                 }
 
@@ -191,10 +193,12 @@ public class Favorite_Fragment extends Fragment implements DetailNetwotkingDeleg
             @Override
             public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<Meal> meals) {
                 fav_meals = meals;
+                Log.i("mealsss", "onSuccess: "+meals.size());
             }
             @Override
             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
+                Log.i("mealsss", "onError: "+e.getMessage());
             }
         });
     }

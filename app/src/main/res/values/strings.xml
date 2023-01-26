@@ -134,7 +134,7 @@
 //////////////////////////////////////////////////////////////////////////////////
     <string name="search_lebal">Search</string>
     <string name="search_by_ingredients">Search by Ingredients</string>
-    <string name="search_by_meal">Search by Meal</string>
+    <string name="search_by_meal">Filtred Search Meals</string>
     <string name="confirmPass">Confirm Password</string>
 
 </resources>

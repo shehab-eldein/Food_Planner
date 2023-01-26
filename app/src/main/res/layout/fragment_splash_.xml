@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrayBackGround"
-    tools:context=".OnBoarding.OnBoarding.Splash_Fragment">
+    tools:context=".OnBoarding.OnBoarding.Splash_Fragment"
+
+    >
 
     <TextView
         android:id="@+id/textView11"

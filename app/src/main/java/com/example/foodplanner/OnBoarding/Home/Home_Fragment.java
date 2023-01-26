@@ -1,5 +1,6 @@
 package com.example.foodplanner.OnBoarding.Home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -67,6 +68,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     FavFireStoreRepo fireStoreRepo;
     ListFireStoreRepo listFireStoreRepo;
     TextView userName;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

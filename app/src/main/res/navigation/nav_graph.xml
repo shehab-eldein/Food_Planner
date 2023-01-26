@@ -83,6 +83,9 @@
             android:id="@+id/action_splash_Fragment_to_onBoardingBase_Fragment"
             app:destination="@id/onBoardingBase_Fragment"
             app:enterAnim="@anim/from_left" />
+        <action
+            android:id="@+id/action_splash_Fragment_to_home_Fragment"
+            app:destination="@id/home_Fragment" />
     </fragment>
     <fragment
         android:id="@+id/favorite_Fragment"

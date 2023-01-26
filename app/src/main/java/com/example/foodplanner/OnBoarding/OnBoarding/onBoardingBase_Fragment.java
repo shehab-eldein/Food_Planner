@@ -81,6 +81,7 @@ public class onBoardingBase_Fragment extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 dots[i].setTextColor(getResources().getColor(R.color.inactive,requireContext().getTheme()));
             }
+
             mDotLayout.addView(dots[i]);
 
         }

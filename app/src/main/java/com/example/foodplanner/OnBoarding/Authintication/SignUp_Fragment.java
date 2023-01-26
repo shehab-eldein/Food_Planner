@@ -1,6 +1,8 @@
 package com.example.foodplanner.OnBoarding.Authintication;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +35,8 @@ public class SignUp_Fragment extends Fragment {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     View v;
     private ProgressDialog loadingBar;
+
+    SharedPreferences sharedPref;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +83,20 @@ public class SignUp_Fragment extends Fragment {
 
 
                         if (task.isSuccessful()) {
+
+
+
+                            //////////////////////////////////////////
+                            sharedPref =getActivity().getPreferences(Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putBoolean("Registered",true);
+                            editor.putString("Email", mail);
+                            editor.putString("Password", password);
+                            editor.commit();
+                            ////////////////////////////////////////
+
+
+
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             if (user != null) {
                                 updateUserData(user, mail);

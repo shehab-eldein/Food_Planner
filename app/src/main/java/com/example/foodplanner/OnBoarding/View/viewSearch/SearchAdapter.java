@@ -1,6 +1,7 @@
 package com.example.foodplanner.OnBoarding.View.viewSearch;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.foodplanner.OnBoarding.View.viewIngredient.OnSearchClick;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;
@@ -17,14 +19,12 @@ import java.util.List;
 
 public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder>  {
     private List<String> list = new ArrayList<>();
-   // private List<String> list = new ArrayList<>();
-    //private OnMealClick listOnClickItem;
+    private OnSearchClick onSearchClick;
     private Context context;
 
-    public SearchAdapter(List<String> list2){
-          //  , OnMealClick listOnClickItem) {
+    public SearchAdapter(List<String> list2, OnSearchClick onSearchClick) {
         this.list = list2;
-       // this.listOnClickItem = listOnClickItem;
+        this.onSearchClick=onSearchClick;
     }
 
 
@@ -45,7 +45,7 @@ public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder> 
         String row = list.get(position);
 
         holder.search_item_tv.setText(row);
-
+        holder.itemView.setTag(row);
 
     }
 
@@ -57,25 +57,28 @@ public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder> 
 
 
 
-public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
 
-    public TextView search_item_tv;
+        public TextView search_item_tv;
 
-    public Holder(@NonNull View itemView) {
-        super(itemView);
+        public Holder(@NonNull View itemView) {
+            super(itemView);
 
-        search_item_tv = itemView.findViewById(R.id.search_reslut);
+            search_item_tv = itemView.findViewById(R.id.search_reslut);
+            itemView.setOnClickListener(this);
 
 
+        }
 
+        @Override
+        public void onClick(View view) {
+            onSearchClick.onClickItem(view.getTag().toString());
+
+            Log.i("TAGggggggggggggggggggggggggggggggggggg", "onClick:   ssssssssssssssssssssssss  "+view.getTag().toString());
+        }
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 }
 
-}

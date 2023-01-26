@@ -11,24 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.foodplanner.OnBoarding.CurrentUser;
 import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
-import com.example.foodplanner.OnBoarding.UserFav;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStoreRepo;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.DetailPresenter;
 import com.example.foodplanner.OnBoarding.Utilites.network.NetworkRepo;
 import com.example.foodplanner.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -44,16 +38,20 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     ImageView mealImage;
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    DocumentReference docRef;
+    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //DocumentReference docRef;
     MealList mealList;
     Meal mealFav;
     RoomRepo repo;
+    FavFireStoreRepo fireRepo;
+    ListFireStoreRepo listFireStoreRepo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         repo = new RoomRepo(requireContext());
+        fireRepo = new FavFireStoreRepo();
+        listFireStoreRepo = new ListFireStoreRepo();
     }
 
     @Override
@@ -68,7 +66,7 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         connectDesign(view);
-        docRef = db.collection("Fav").document(CurrentUser.getEmail());
+        //docRef = db.collection("Fav").document(CurrentUser.getEmail());
         getLifecycle().addObserver(mealVidio);
         id = Detail_FragmentArgs.fromBundle(getArguments()).getID();
         helperr = new NetworkRepo(this,id);
@@ -78,45 +76,14 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
 
     }
 
-    void updateFireStore() {
-        db.collection("Fav")
-                .document(CurrentUser.getEmail())
-                .update("favMeals", FieldValue.arrayUnion(id.toString())).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(requireContext(), "The Meal  Failed Added To Favorite Try Again", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-    private void addToFireStore() {
-        UserFav fav = new UserFav(favMeals);
-        db.collection("Fav").document(CurrentUser.getEmail())
-                .set(fav)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(requireContext(), "The Meal  Failed Added To Favorite Try Again", Toast.LENGTH_LONG).show();
 
-                    }
-                });
-    }
 
     void favBtnClicked() {
         favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 repo.insertFav(mealFav);
+                fireRepo.addFavMeal(  String.valueOf(mealFav.getIdMeal()));
 
             }
         });
@@ -127,6 +94,7 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
                     @Override
                     public void onClick(View view) {
                         repo.insertMealList(mealList);
+                        listFireStoreRepo.addMealListMeal(String.valueOf( mealList.getIdMeal()));
                     }
                 }
         );

@@ -27,10 +27,15 @@ public class Meal {
     private String area;
 
 
+    public Meal(Long idMeal, String strMeal, String strMealThumb) {
+        this.idMeal = idMeal;
+        this.strMeal = strMeal;
+        this.strMealThumb = strMealThumb;
+    }
 
     public Meal(String strMeal,
                 String strMealThumb,
-                Long idMeal,String instraction,String area) {
+                Long idMeal, String instraction, String area) {
 
         this.strMeal = strMeal;
         this.strMealThumb = strMealThumb;

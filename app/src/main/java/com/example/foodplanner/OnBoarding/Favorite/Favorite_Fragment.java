@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.Presenters.GetFavPresenter;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
@@ -28,10 +29,12 @@ public class Favorite_Fragment extends Fragment implements OnClickMealListenerFa
     MealListAdapter fav_Adapter;
     List<Meal> fav_meals;
     RoomRepo repo;
+    FavFireStoreRepo fireRepo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fireRepo = new FavFireStoreRepo();
     }
 
     @Override
@@ -57,6 +60,7 @@ public class Favorite_Fragment extends Fragment implements OnClickMealListenerFa
         fav_meals.remove(meal);
         repo.deleteMealFromFav(meal);
         fav_Adapter.notifyItemRemoved(position);
+        fireRepo.deleteFavMeal(String.valueOf(meal.getIdMeal()));
     }
 
     @Override

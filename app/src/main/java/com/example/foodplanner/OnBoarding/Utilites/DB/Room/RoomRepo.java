@@ -2,6 +2,7 @@ package com.example.foodplanner.OnBoarding.Utilites.DB.Room;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
@@ -22,23 +23,27 @@ public class RoomRepo {
     DAO dao;
     GetFavPresenter getFavPresenter;
     GetMealListPresenter getMealListPresenter;
+    Context requireContext;
 
     public RoomRepo(GetMealListPresenter getMealListPresenter,Context requireContext) {
         this.getMealListPresenter = getMealListPresenter;
         RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext);
         dao = roomDatabase.DAO();
+        this.requireContext = requireContext;
 
     }
 
     public RoomRepo(Context requireContext) {
         RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext);
         dao = roomDatabase.DAO();
+        this.requireContext = requireContext;
     }
 
     public RoomRepo(GetFavPresenter presenter, Context requireContext) {
         RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext);
         dao = roomDatabase.DAO();
         this.getFavPresenter = presenter;
+        this.requireContext = requireContext;
 
     }
 
@@ -55,6 +60,7 @@ public class RoomRepo {
                             @Override
                             public void onComplete() {
 
+                               // Toast.makeText(requireContext, "The Meal Added To Offline Favorite", Toast.LENGTH_LONG).show();
                             }
 
                             @Override

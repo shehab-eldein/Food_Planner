@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 
 
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStoreRepo;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.Presenters.GetMealListPresenter;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.View.viewMealList.DayAdapter;
@@ -31,14 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import io.reactivex.rxjava3.core.CompletableObserver;
-
-
 public class MealList_Fragment extends Fragment implements OnDayClickListener, OnMeallistClickListener, GetMealListPresenter {
     RecyclerView mealList_rv;
     MealListAdapter mealListAdapter;
@@ -48,6 +40,8 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     RecyclerView days_rv;
     String dayFilter="Sunday";
     RoomRepo repo;
+    FavFireStoreRepo fireRepo;
+    ListFireStoreRepo listFireStoreRepo;
 
 
     @Override
@@ -55,6 +49,8 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
         super.onCreate(savedInstanceState);
         days_list=new ArrayList<String>();
         repo = new RoomRepo(this,requireContext());
+        fireRepo = new FavFireStoreRepo();
+        listFireStoreRepo = new ListFireStoreRepo();
 
 
     }
@@ -72,6 +68,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
         mealList_rv = view.findViewById(R.id.recycler_Fav);
         updateDayRecycleView(view);
         repo.getMealList(dayFilter);
+
 
     }
     void updateDayRecycleView(View view) {
@@ -103,6 +100,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     @Override
     public void onClickMealList(MealList mealList, int position) {
         repo.deleteMealFromList(mealList);
+        listFireStoreRepo.deleteMealListMeal(String.valueOf(mealList.getIdMeal()));
         mealList_meals.remove(mealList);
         mealListAdapter.notifyItemRemoved(position);
     }
@@ -122,4 +120,6 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     public void failMealList(String err) {
 
     }
+
+
 }

@@ -14,18 +14,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import com.example.foodplanner.OnBoarding.CurrentUser;
 import com.example.foodplanner.OnBoarding.Loading;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
+import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStorePresenter;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStorePresenter;
+import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStoreRepo;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.CategoryPresenter;
 import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.DetailPresenter;
@@ -34,21 +39,15 @@ import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.RandomPres
 import com.example.foodplanner.OnBoarding.View.viewMeal.MealAdapter;
 import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
 import com.example.foodplanner.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
-
-public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter, DetailPresenter {
+public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter
+, FavFireStorePresenter, ListFireStorePresenter
+{
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     RecyclerView categoryRecyclerView;
@@ -62,6 +61,9 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     ArrayList<String> idArray= new ArrayList<>();
     RoomRepo repo;
     Button logout_btn;
+    TextView backeUp;
+    FavFireStoreRepo fireStoreRepo;
+    ListFireStoreRepo listFireStoreRepo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,9 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         user = firebaseAuth.getCurrentUser();
         helperr =  new NetworkRepo(this,this);
         repo = new RoomRepo(requireContext());
+        fireStoreRepo = new FavFireStoreRepo(this);
+        listFireStoreRepo = new ListFireStoreRepo(this);
+
 
 
 
@@ -87,19 +92,30 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        categoryRecyclerView = view.findViewById(R.id.Recycler_File);
-        randomRecyclerView = view.findViewById(R.id.rv);
-        logout_btn=view.findViewById(R.id.logOut_btn);
+        connectDesign(view);
         helperr.getRandomMeals();
         helperr.getCategories();
         logOutBtnClicked();
         Loading.activeLoading(requireContext());
         setCurrentUser();
+        backeUpBtnClicked();
 
-
-
-
-
+    }
+    void connectDesign(View view) {
+        categoryRecyclerView = view.findViewById(R.id.Recycler_File);
+        randomRecyclerView = view.findViewById(R.id.rv);
+        logout_btn=view.findViewById(R.id.logOut_btn);
+        backeUp = view.findViewById(R.id.bakeup_label);
+    }
+    void backeUpBtnClicked() {
+        backeUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fireStoreRepo.getFavList();
+                listFireStoreRepo.getMealList();
+                Loading.activeLoading(requireContext());
+            }
+        });
 
 
     }
@@ -122,29 +138,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         });
 
     }
-    void getAllData() {
 
 
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        idArray =  (ArrayList<String>)document.get("favMeals");
-                        Long id = Long.parseLong(idArray.get(0));
-                        helperr = new NetworkRepo(Home_Fragment.this,id);
-                        helperr.getMealsDetails();
-                    } else {
-                        Log.d("DATA", "No such document");
-                    }
-                } else {
-                    Log.d("DATA", "get failed with ", task.getException());
-                }
-            }
-        });
-
-    }
 
 
     @Override
@@ -186,14 +181,33 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
 
     }
 
-    @Override
-    public void succsessDetails(ArrayList<Detail> details) {
 
+
+    @Override
+    public void succsessFireStoreFav(List<Meal> meals) {
+        for(Meal meal:meals) {
+           repo.insertFav(meal);
+        }
+        Loading.dismiss();
+
+    }
+    @Override
+    public void failFireStoreFav(String err) {
 
     }
 
     @Override
-    public void failDetails(String err) {
+    public void succsessFireStoreList(List<MealList> meals) {
+        for(MealList meal:meals) {
+            repo.insertMealList(meal);
+            //repo.insertFav(new Meal(meal.getStrMeal(),meal.getStrMealThumb(),meal.getIdMeal(),"hello","egypt"));
+        }
+        Loading.dismiss();
+    }
+
+    @Override
+    public void failFireStoreList(String err) {
+        Log.i("eeee", "failFireStoreList: "+err);
 
     }
 }

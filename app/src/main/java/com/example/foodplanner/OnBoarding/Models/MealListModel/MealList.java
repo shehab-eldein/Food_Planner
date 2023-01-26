@@ -42,6 +42,14 @@ public class MealList  {
         this.idMeal = idMeal;
         this.day=day;
     }
+    public MealList(String strMeal,
+                String strMealThumb,
+                Long idMeal) {
+
+        this.strMeal = strMeal;
+        this.strMealThumb = strMealThumb;
+        this.idMeal = idMeal;
+    }
 
     public MealList() {
     }

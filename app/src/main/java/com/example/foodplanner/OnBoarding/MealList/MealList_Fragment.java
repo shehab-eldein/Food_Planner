@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     DayAdapter dayAdapter ;
     List<String>days_list;
     RecyclerView days_rv;
-    String dayFilter="Sunday";
+    String dayFilter="sunday";
     RoomRepo repo;
     FavFireStoreRepo fireRepo;
     ListFireStoreRepo listFireStoreRepo;
@@ -114,10 +115,12 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         mealListAdapter=new MealListAdapter(mealList_meals,MealList_Fragment.this);
         mealList_rv.setAdapter(mealListAdapter);
+
     }
 
     @Override
     public void failMealList(String err) {
+        Log.i("tttt",err);
 
     }
 

@@ -13,6 +13,31 @@
         android:background="@color/lightGrayBackGround"
         tools:context=".OnBoarding.Home.Home_Fragment">
 
+        <TextView
+            android:id="@+id/UserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="cursive"
+            android:text="shehab el dein"
+            android:textColor="@color/custom"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/app_name_food_tv3"
+            app:layout_constraintTop_toTopOf="@+id/app_name_food_tv3" />
+
+        <TextView
+            android:id="@+id/app_name_food_tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:text="Welcome:"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/category_tv"
+            app:layout_constraintStart_toStartOf="@+id/category_tv" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/Recycler_File"
             android:layout_width="0dp"
@@ -50,7 +75,7 @@
             android:id="@+id/app_name_food_tv"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="90dp"
             android:text="@string/food"
@@ -98,30 +123,23 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-
-        <Button
-            android:id="@+id/logOut_btn"
-            android:layout_width="92dp"
-            android:layout_height="48dp"
-
-            android:text="Log Out"
-            android:textSize="10sp"
-
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Recycler_File" />
-
-        <TextView
+        <ImageView
             android:id="@+id/bakeup_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Backup"
-            android:textColor="@color/myOrange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/rv"
+            app:layout_constraintTop_toTopOf="@+id/category_tv"
+            app:srcCompat="@drawable/database" />
+
+        <ImageView
+            android:id="@+id/logOut_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:rotationY="-201"
+            app:layout_constraintBottom_toTopOf="@+id/app_name_food_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/log_out" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

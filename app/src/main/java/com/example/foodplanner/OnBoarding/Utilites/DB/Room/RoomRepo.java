@@ -85,7 +85,7 @@ public class RoomRepo {
                             @Override
                             public void onComplete() {
 
-                                Log.i("mealsss", "onComplete: ");
+                                Log.i("mealsss", "onComplete: "+mealList.getIdMeal());
                             }
 
                             @Override
@@ -161,11 +161,13 @@ public class RoomRepo {
                         mealListAdapter=new MealListAdapter(mealList_meals, MealList_Fragment.this);
                         mealList_rv.setAdapter(mealListAdapter);
                         */
+                        Log.i("mealsss", "Succ: "+mealLists.size());
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         getMealListPresenter.failMealList(e.getMessage());
+                        Log.i("mealsss", "onError: "+e.getStackTrace());
                     }
                 });
     }

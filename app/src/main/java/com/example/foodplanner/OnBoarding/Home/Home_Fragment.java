@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -60,10 +62,11 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<String> idArray= new ArrayList<>();
     RoomRepo repo;
-    Button logout_btn;
-    TextView backeUp;
+    ImageView logout_btn;
+    ImageView backeUp;
     FavFireStoreRepo fireStoreRepo;
     ListFireStoreRepo listFireStoreRepo;
+    TextView userName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         Loading.activeLoading(requireContext());
         setCurrentUser();
         backeUpBtnClicked();
+        userName.setText(CurrentUser.getEmail());
 
     }
     void connectDesign(View view) {
@@ -106,6 +110,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         randomRecyclerView = view.findViewById(R.id.rv);
         logout_btn=view.findViewById(R.id.logOut_btn);
         backeUp = view.findViewById(R.id.bakeup_label);
+        userName = view.findViewById(R.id.UserName);
     }
     void backeUpBtnClicked() {
         backeUp.setOnClickListener(new View.OnClickListener() {
@@ -132,11 +137,15 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
 
               repo.deleteAllFav();
               repo.deleteAllList();
+              goSigns();
 
 
             }
         });
 
+    }
+    public void goSigns() {
+        Navigation.findNavController(getView()).navigate(R.id.signs_Fragment);
     }
 
 
@@ -199,6 +208,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     @Override
     public void succsessFireStoreList(List<MealList> meals) {
         for(MealList meal:meals) {
+            meal.setDay("Sunday");
             repo.insertMealList(meal);
             //repo.insertFav(new Meal(meal.getStrMeal(),meal.getStrMealThumb(),meal.getIdMeal(),"hello","egypt"));
         }

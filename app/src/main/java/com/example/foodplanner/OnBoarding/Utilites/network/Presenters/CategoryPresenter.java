@@ -1,11 +1,10 @@
-package com.example.foodplanner.OnBoarding.Utilites.network;
+package com.example.foodplanner.OnBoarding.Utilites.network.Presenters;
 
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
-import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 
 import java.util.ArrayList;
 
-public interface CategoryNetworkingDelegate {
+public interface CategoryPresenter {
      void succsessCategory(ArrayList<Category> categories);
      void failCategory(String err);
 }

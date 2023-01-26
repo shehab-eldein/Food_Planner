@@ -16,8 +16,10 @@ import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 
 
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.Presenters.GetMealListPresenter;
 import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.View.viewMealList.DayAdapter;
 import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
 import com.example.foodplanner.OnBoarding.View.viewMealList.OnDayClickListener;
@@ -37,29 +39,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.core.CompletableObserver;
 
 
-public class MealList_Fragment extends Fragment implements OnDayClickListener, OnMeallistClickListener {
+public class MealList_Fragment extends Fragment implements OnDayClickListener, OnMeallistClickListener, GetMealListPresenter {
     RecyclerView mealList_rv;
     MealListAdapter mealListAdapter;
     List<MealList> mealList_meals;
-    DAO dao;
-
-
-    OnDayClickListener onDayClickListener;
     DayAdapter dayAdapter ;
     List<String>days_list;
-
     RecyclerView days_rv;
     String dayFilter="Sunday";
+    RoomRepo repo;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
-        dao = roomDatabase.DAO();
-
         days_list=new ArrayList<String>();
+        repo = new RoomRepo(this,requireContext());
 
 
     }
@@ -67,8 +62,6 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        getMealList();
         return inflater.inflate(R.layout.fragment_meal_list_, container, false);
     }
 
@@ -77,7 +70,11 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mealList_rv = view.findViewById(R.id.recycler_Fav);
-//        mealList_rv.setVisibility(View.GONE);
+        updateDayRecycleView(view);
+        repo.getMealList(dayFilter);
+
+    }
+    void updateDayRecycleView(View view) {
         days_rv=view.findViewById(R.id.recycler_days);
         days_list.add("Saturday");
         days_list.add("Sunday");
@@ -90,75 +87,39 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
         LinearLayoutManager layoutManager=new LinearLayoutManager(requireContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         days_rv.setLayoutManager(layoutManager);
-
-
         dayAdapter=new DayAdapter(days_list,this);
         days_rv.setAdapter(dayAdapter);
-
 
     }
 
 
     @Override
     public void onClickDay(String dayName) {
-
         dayFilter=dayName;
-        getMealList();
-
-
-
+        repo.getMealList(dayFilter);
     }
-    void getMealList() {
-        dao.getListMeals(dayFilter)
 
-                .subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<MealList>>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<MealList> mealLists) {
-
-                        mealList_meals = mealLists;
-                        mealList_rv.setHasFixedSize(true);
-                        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
-                        mealList_rv.setLayoutManager(linearLayoutManager);
-                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                        mealListAdapter=new MealListAdapter(mealList_meals,MealList_Fragment.this);
-                        mealList_rv.setAdapter(mealListAdapter);
-                    }
-
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                    }
-                });
-    }
 
     @Override
     public void onClickMealList(MealList mealList, int position) {
-        dao.deleteListMeal(mealList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+        repo.deleteMealFromList(mealList);
+        mealList_meals.remove(mealList);
+        mealListAdapter.notifyItemRemoved(position);
+    }
 
-                    }
+    @Override
+    public void succsessMealList(List<MealList> meals) {
+        mealList_meals = meals;
+        mealList_rv.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
+        mealList_rv.setLayoutManager(linearLayoutManager);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        mealListAdapter=new MealListAdapter(mealList_meals,MealList_Fragment.this);
+        mealList_rv.setAdapter(mealListAdapter);
+    }
 
-                    @Override
-                    public void onComplete() {
-                        mealList_meals.remove(mealList);
-                        mealListAdapter.notifyItemRemoved(position);
-                    }
+    @Override
+    public void failMealList(String err) {
 
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                    }
-                });
     }
 }

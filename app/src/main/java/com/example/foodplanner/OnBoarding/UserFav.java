@@ -7,12 +7,7 @@ import java.util.ArrayList;
 
 public class UserFav implements Serializable {
 
-
     private ArrayList<String> favMeals ;
-
-
-
-
     public UserFav() {
     }
 

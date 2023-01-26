@@ -1,13 +1,11 @@
 package com.example.foodplanner.OnBoarding.Home;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +20,13 @@ import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.UserFav;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.DAO;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
-import com.example.foodplanner.OnBoarding.Utilites.network.DetailNetwotkingDelegate;
-import com.example.foodplanner.OnBoarding.Utilites.network.NetworkHelper;
-import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
+import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.DetailPresenter;
+import com.example.foodplanner.OnBoarding.Utilites.network.NetworkRepo;
 import com.example.foodplanner.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -43,31 +36,24 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.ArrayList;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
-
-public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegate {
-
+public class Detail_Fragment extends Fragment implements DetailPresenter {
     Long id;
-    NetworkHelper helperr ;
+    NetworkRepo helperr ;
     TextView mealName,mealArea,mealInstructions,favIcon,meal_list;
     ImageView mealImage;
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     DocumentReference docRef;
     MealList mealList;
     Meal mealFav;
-    DAO dao;
+    RoomRepo repo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoomDatabase roomDatabase = RoomDatabase.getInstance(requireContext());
-        dao = roomDatabase.DAO();
+        repo = new RoomRepo(requireContext());
     }
 
     @Override
@@ -85,10 +71,10 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         docRef = db.collection("Fav").document(CurrentUser.getEmail());
         getLifecycle().addObserver(mealVidio);
         id = Detail_FragmentArgs.fromBundle(getArguments()).getID();
-        helperr = new NetworkHelper(this,id);
+        helperr = new NetworkRepo(this,id);
         helperr.getMealsDetails();
         favBtnClicked();
-        mealListClicked();
+        ListBtnClicked();
 
     }
 
@@ -130,66 +116,17 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d("FireStore", "Document exists!");
-                                updateFireStore();
-                            } else {
-                                Log.d("FireStore", "Document does not exist!");
-                                addToFireStore();
-                            }
-                        } else {
-                            Log.d("FireStore", "Failed with: ", task.getException());
-                        }
-                    }
-
-
-                });
-*/
-                insertFav(mealFav);
+                repo.insertFav(mealFav);
 
             }
         });
-
-
-
     }
-
-    public void insertFav(Meal meal) {
-        dao.insertFavMeal(meal).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new CompletableObserver() {
-                            @Override
-                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-
-                            @Override
-                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                            }
-                        }
-                );
-
-    }
-
-    void mealListClicked(){
-
+    void ListBtnClicked(){
         meal_list.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        insertMealList(mealList);
+                        repo.insertMealList(mealList);
                     }
                 }
         );
@@ -225,14 +162,8 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
         });
 
         /////todo drop list
-
         mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),"Sunday");
-
-
-
-
-       mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),details.get(0).strInstructions,details.get(0).strArea);
-
+        mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),details.get(0).strInstructions,details.get(0).strArea);
 
     }
 
@@ -242,30 +173,5 @@ public class Detail_Fragment extends Fragment implements DetailNetwotkingDelegat
     }
 
 
-    public void insertMealList(MealList mealList) {
-        dao.insertListMeal(mealList).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new CompletableObserver() {
-                            @Override
-                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                                Log.i("mealsss", "onSub: ");
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                                Log.i("mealsss", "onComplete: ");
-                            }
-
-                            @Override
-                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                                Log.i("mealsss", "onEror: "+e.getMessage());
-                            }
-                        }
-                );
-
-    }
 }

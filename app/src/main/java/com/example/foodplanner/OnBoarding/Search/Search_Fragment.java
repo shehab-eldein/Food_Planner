@@ -16,12 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.foodplanner.OnBoarding.Models.Ingredient.Ingredient;
 import com.example.foodplanner.OnBoarding.Models.Ingredient.RootMealIngredient;
 import com.example.foodplanner.OnBoarding.Utilites.network.APIClient;
-import com.example.foodplanner.OnBoarding.Utilites.network.APIinterfaceIngredient;
+import com.example.foodplanner.OnBoarding.Utilites.network.APIinterface;
 import com.example.foodplanner.OnBoarding.View.viewIngredient.IngredientAdapter;
 import com.example.foodplanner.OnBoarding.View.viewSearch.SearchAdapter;
 import com.example.foodplanner.R;
@@ -33,14 +32,8 @@ import java.util.stream.Collectors;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -88,7 +81,7 @@ public class Search_Fragment extends Fragment {//implements OnMealClick {
 
 
         Retrofit apiClient = APIClient.getClient();
-        APIinterfaceIngredient apiInterface = apiClient.create(APIinterfaceIngredient.class);
+        APIinterface apiInterface = apiClient.create(APIinterface.class);
 
 
         apiInterface.getingrdiants()

@@ -6,6 +6,9 @@ import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.DetailRoot;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
+import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.CategoryPresenter;
+import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.DetailPresenter;
+import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.RandomPresenter;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,10 +18,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class NetworkHelper {
-    RandomNetworkingDelegate randomDelegate;
-    CategoryNetworkingDelegate categoryDelegate;
-    DetailNetwotkingDelegate detailDelegate;
+public class NetworkRepo {
+    RandomPresenter randomDelegate;
+    CategoryPresenter categoryDelegate;
+    DetailPresenter detailDelegate;
     String[] random_countrys = new String[]{"British", "French", "Egyptian", "Japanese", "Croatian", "Canadian", "Indian", "Polish"};
     ArrayList<Meal> meals;
     ArrayList<Category> categories;
@@ -28,12 +31,12 @@ public class NetworkHelper {
     Long id;
 
 
-    public NetworkHelper(RandomNetworkingDelegate randomDelegate, CategoryNetworkingDelegate categoryDelegate) {
+    public NetworkRepo(RandomPresenter randomDelegate, CategoryPresenter categoryDelegate) {
         this.randomDelegate = randomDelegate;
         this.categoryDelegate = categoryDelegate;
     }
 
-    public NetworkHelper(DetailNetwotkingDelegate detailDelegate, Long id) {
+    public NetworkRepo(DetailPresenter detailDelegate, Long id) {
         this.detailDelegate = detailDelegate;
         this.id = id;
     }

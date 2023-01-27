@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.foodplanner.OnBoarding.Home.Home_Fragment;
 import com.example.foodplanner.OnBoarding.Utilites.AppStatus;
 import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionReceive
 View view;
     BottomNavigationView bottomNavigationView;
     NavController navController;
-    Button reloadBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,31 +45,13 @@ View view;
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
         handelButtomNavigation();
-        reloadBtn = findViewById(R.id.reload);
+
 
 
         checkConnection();
-        reloadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AppStatus.getInstance(MainActivity.this).isOnline()) {
 
-                    showSnackBar(true);
-
-                } else {
-                    showSnackBar(false);
-
-
-                }
-            }
-        });
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
     @Override
     protected void onPause() {
@@ -130,27 +113,23 @@ View view;
         boolean isConnected = networkInfo != null && networkInfo.isConnectedOrConnecting();
         // display snack bar
         showSnackBar(isConnected);
+
     }
     private void showSnackBar(boolean isConnected) {
         // initialize color and message
+
         String message;
 
         // check condition
         if (isConnected) {
             message = "Connected to Internet";
+            CurrentUser.setIsConnected(true);
         } else {
             message = "Not Connected to Internet";
+
+            CurrentUser.setIsConnected(false);
         }
-        // initialize snack bar
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.reload),message, Snackbar.LENGTH_LONG);
-        // initialize view
-       // View view = snackbar.getView();
-        // Assign variable
-       // TextView textView = view.findViewById(R.id.app_name_food_tv);
-        // set text color
-       // textView.setTextColor(color);
-        // show snack bar
-        snackbar.show();
+
     }
 
 

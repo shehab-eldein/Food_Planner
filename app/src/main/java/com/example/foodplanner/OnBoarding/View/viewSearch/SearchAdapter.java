@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.foodplanner.OnBoarding.View.viewIngredient.OnSearchClick;
+import com.example.foodplanner.OnBoarding.View.IngredientView.OnSearchClick;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;

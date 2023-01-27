@@ -1,6 +1,10 @@
 package com.example.foodplanner.OnBoarding.Home;
 
-import android.content.SharedPreferences;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,24 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.example.foodplanner.OnBoarding.CurrentUser;
-import com.example.foodplanner.OnBoarding.Loading;
+import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
+import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.OnBoarding.Models.CategoryModel.Category;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
-import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStorePresenter;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStorePresenter;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStoreRepo;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
-import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.CategoryPresenter;
-import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.DetailPresenter;
-import com.example.foodplanner.OnBoarding.Utilites.network.NetworkRepo;
-import com.example.foodplanner.OnBoarding.Utilites.network.Presenters.RandomPresenter;
-import com.example.foodplanner.OnBoarding.View.viewMeal.MealAdapter;
-import com.example.foodplanner.OnBoarding.View.viewMeal.OnMealClick;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStorePresenter;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStorePresenter;
+import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStoreRepo;
+import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.network.Presenters.CategoryPresenter;
+import com.example.foodplanner.OnBoarding.network.NetworkRepo;
+import com.example.foodplanner.OnBoarding.network.Presenters.RandomPresenter;
+import com.example.foodplanner.OnBoarding.View.MealView.MealAdapter;
+import com.example.foodplanner.OnBoarding.View.MealView.OnMealClick;
 import com.example.foodplanner.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -49,8 +52,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter
-, FavFireStorePresenter, ListFireStorePresenter
-{
+, FavFireStorePresenter, ListFireStorePresenter {
+
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     RecyclerView categoryRecyclerView;
@@ -81,11 +84,6 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         repo = new RoomRepo(requireContext());
         fireStoreRepo = new FavFireStoreRepo(this);
         listFireStoreRepo = new ListFireStoreRepo(this);
-
-
-
-
-
     }
 
     @Override
@@ -102,7 +100,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         helperr.getRandomMeals();
         helperr.getCategories();
         logOutBtnClicked();
-        Loading.activeLoading(requireContext());
+      //  Loading.activeLoading(requireContext());
         setCurrentUser();
         backeUpBtnClicked();
         userName.setText(CurrentUser.getEmail());
@@ -150,6 +148,9 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     public void goSigns() {
         Navigation.findNavController(getView()).navigate(R.id.signs_Fragment);
     }
+
+
+
 
 
 
@@ -223,4 +224,6 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         Log.i("eeee", "failFireStoreList: "+err);
 
     }
+
+
 }

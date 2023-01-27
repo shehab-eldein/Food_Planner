@@ -1,11 +1,8 @@
 package com.example.foodplanner.OnBoarding.Models.MealListModel;
 
 import androidx.room.ColumnInfo;
-import androidx.room.Database;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomDatabase;
 
 import javax.annotation.Nonnull;
 

@@ -22,13 +22,13 @@ import com.example.foodplanner.OnBoarding.Models.Ingredient.Ingredient;
 import com.example.foodplanner.OnBoarding.Models.Ingredient.RootMealIngredient;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
-import com.example.foodplanner.OnBoarding.Utilites.network.APIClient;
-import com.example.foodplanner.OnBoarding.Utilites.network.APIinterfaceIngredient;
-import com.example.foodplanner.OnBoarding.Utilites.network.APIinterfaceMealIngredient;
+import com.example.foodplanner.OnBoarding.network.APIClient;
+import com.example.foodplanner.OnBoarding.network.APIinterfaceIngredient;
+import com.example.foodplanner.OnBoarding.network.APIinterfaceMealIngredient;
 
-import com.example.foodplanner.OnBoarding.View.viewIngredient.IngredientAdapter;
-import com.example.foodplanner.OnBoarding.View.viewIngredient.OnSearchClick;
-import com.example.foodplanner.OnBoarding.View.viewMealFilterd.MealAdapterSearch;
+import com.example.foodplanner.OnBoarding.View.IngredientView.IngredientAdapter;
+import com.example.foodplanner.OnBoarding.View.IngredientView.OnSearchClick;
+import com.example.foodplanner.OnBoarding.View.MealFilterdView.MealAdapterSearch;
 import com.example.foodplanner.OnBoarding.View.viewSearch.SearchAdapter;
 import com.example.foodplanner.R;
 

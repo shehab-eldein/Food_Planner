@@ -16,15 +16,15 @@ import android.view.ViewGroup;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 
 
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.MealList.ListFireStoreRepo;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.Presenters.GetMealListPresenter;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStoreRepo;
+import com.example.foodplanner.OnBoarding.DB.Room.Presenters.GetMealListPresenter;
 
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
-import com.example.foodplanner.OnBoarding.View.viewMealList.DayAdapter;
-import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
-import com.example.foodplanner.OnBoarding.View.viewMealList.OnDayClickListener;
-import com.example.foodplanner.OnBoarding.View.viewMealList.OnMeallistClickListener;
+import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.View.MealListView.DayAdapter;
+import com.example.foodplanner.OnBoarding.View.MealListView.MealListAdapter;
+import com.example.foodplanner.OnBoarding.View.MealListView.OnDayClickListener;
+import com.example.foodplanner.OnBoarding.View.MealListView.OnMeallistClickListener;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;

@@ -1,7 +1,5 @@
 package com.example.foodplanner.OnBoarding.OnBoarding;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
@@ -19,8 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.foodplanner.OnBoarding.CurrentUser;
-import com.example.foodplanner.OnBoarding.MainActivity;
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.R;
 
 

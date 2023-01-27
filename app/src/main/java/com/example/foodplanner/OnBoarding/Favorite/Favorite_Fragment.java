@@ -12,13 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.foodplanner.OnBoarding.Loading;
+import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
-import com.example.foodplanner.OnBoarding.Utilites.DB.FireStore.Favorite.FavFireStoreRepo;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.Presenters.GetFavPresenter;
-import com.example.foodplanner.OnBoarding.Utilites.DB.Room.RoomRepo;
-import com.example.foodplanner.OnBoarding.View.viewMealList.MealListAdapter;
-import com.example.foodplanner.OnBoarding.View.viewMealList.OnClickMealListenerFav;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStoreRepo;
+import com.example.foodplanner.OnBoarding.DB.Room.Presenters.GetFavPresenter;
+import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.View.MealListView.MealListAdapter;
+import com.example.foodplanner.OnBoarding.View.MealListView.OnClickMealListenerFav;
 import com.example.foodplanner.R;
 
 import java.util.List;

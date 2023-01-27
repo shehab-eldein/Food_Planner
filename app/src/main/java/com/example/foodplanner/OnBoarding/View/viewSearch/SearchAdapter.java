@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.foodplanner.OnBoarding.View.IngredientView.OnSearchClick;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;
@@ -20,12 +19,41 @@ import java.util.List;
 public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder>  {
     private List<String> list = new ArrayList<>();
     private OnSearchClick onSearchClick;
+    private List<String> tempIng = new ArrayList<>();
+    private List<String> tempAr = new ArrayList<>();
+    private List<String> tempCat = new ArrayList<>();
+
+
     private Context context;
 
     public SearchAdapter(List<String> list2, OnSearchClick onSearchClick) {
         this.list = list2;
         this.onSearchClick=onSearchClick;
     }
+
+
+    public SearchAdapter(List<String> ing,List<String> ar, OnSearchClick onSearchClick) {
+        this.tempIng=ing;
+        this.tempAr=ar;
+        this.list.addAll(ing);
+        this.list.addAll(ar);
+        this.onSearchClick=onSearchClick;
+
+    }
+
+
+    public SearchAdapter(List<String> ar,List<String> ing,List<String> cat ,OnSearchClick onSearchClick) {
+        this.tempIng=ing;
+        this.tempAr=ar;
+        this.tempCat=cat;
+        this.list.addAll(ing);
+        this.list.addAll(ar);
+        this.list.addAll(cat);
+
+        this.onSearchClick=onSearchClick;
+
+    }
+
 
 
 
@@ -74,9 +102,21 @@ public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder> 
 
         @Override
         public void onClick(View view) {
-            onSearchClick.onClickItem(view.getTag().toString());
+            if(tempAr.contains(view.getTag().toString())) {
+                onSearchClick.onClickItem(view.getTag().toString(), 1);
+            }
 
-            Log.i("TAGggggggggggggggggggggggggggggggggggg", "onClick:   ssssssssssssssssssssssss  "+view.getTag().toString());
+
+            else if(tempIng.contains(view.getTag().toString())) {
+                onSearchClick.onClickItem(view.getTag().toString(), 2);
+            }
+
+
+            else if(tempCat.contains(view.getTag().toString())) {
+                onSearchClick.onClickItem(view.getTag().toString(), 3);
+            }
+
+
         }
     }
 

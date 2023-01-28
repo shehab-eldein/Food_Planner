@@ -68,7 +68,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick , OnFilte
     List<Category> categories = new ArrayList<>();
     List<String> categoryQuery = new ArrayList<>();
 
-    OnFilteredSearchMealsClick onFilteredSearchMealsClick;
+
 
     private static final String TAG = "Search_Fragment";
 

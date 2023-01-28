@@ -131,9 +131,9 @@ public class ListFireStoreRepo   {
                         for (Map.Entry<String, Object> entry : map.entrySet()) {
                             if (entry.getKey().equals("Meals")) {
                                 //Log.d("TAG", entry.getValue().toString());
-                                MealList meal =entry.getValue().
-                                Log.d("DATAA", ""+  entry.getValue().toString());
-                                days_meals.add(entry.getValue());
+//                                MealList meal =entry.getValue().
+//                                Log.d("DATAA", ""+  entry.getValue().toString());
+//                                days_meals.add(entry.getValue());
                             }
                         }
                         //document.get("Meals");

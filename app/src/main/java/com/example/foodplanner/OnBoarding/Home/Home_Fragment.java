@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.List;
 
 
 import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
+import com.example.foodplanner.OnBoarding.Search.Search_Fragment;
 import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Utilites.Loading;
@@ -39,6 +41,8 @@ import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStoreRepo
 import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStorePresenter;
 import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStoreRepo;
 import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.View.MealFilterdView.FilteredMealAdapterSearch;
+import com.example.foodplanner.OnBoarding.View.MealFilterdView.OnFilteredSearchMealsClick;
 import com.example.foodplanner.OnBoarding.network.APIClient;
 import com.example.foodplanner.OnBoarding.network.APIinterface;
 import com.example.foodplanner.OnBoarding.network.APIinterfaceLists;
@@ -58,14 +62,16 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Function3;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 
 public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter
-, FavFireStorePresenter, ListFireStorePresenter {
+, FavFireStorePresenter, ListFireStorePresenter, OnFilteredSearchMealsClick {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -85,7 +91,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     ListFireStoreRepo listFireStoreRepo;
     TextView userName;
 
-
+List <Meal>mealArrayListRondome=new ArrayList<Meal>();
+    FilteredMealAdapterSearch filteredMealAdapterSearch;
 
 
     @Override
@@ -119,7 +126,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         backeUpBtnClicked();
         setUserName();
 
-
+        getRandomMeal();
     }
     void setUserName() {
         if (CurrentUser.getIsGuest()) {
@@ -196,14 +203,14 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
 
     @Override
     public void succsessCategory(ArrayList<Category> categories) {
-        categoryArrayList = categories;
-        categoryRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        categoryRecyclerView.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        adapter = new MealAdapter(this.categoryArrayList,false);
-        categoryRecyclerView.setAdapter(adapter);
-        //progress.dismiss();
+//        categoryArrayList = categories;
+//        categoryRecyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+//        categoryRecyclerView.setLayoutManager(linearLayoutManager);
+//        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+//        adapter = new MealAdapter(this.categoryArrayList, false);
+//        categoryRecyclerView.setAdapter(adapter);
+//        //progress.dismiss();
     }
 
     @Override
@@ -231,6 +238,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         for(MealList meal:meals) {
            // meal.setDay("Sunday");
             repo.insertMealList(meal);
+            //repo.insertFav(new Meal(meal.getStrMeal(),meal.getStrMealThumb(),meal.getIdMeal(),"hello","egypt"));
         }
 
         Loading.dismiss();
@@ -243,5 +251,81 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
 
     }
 
+
+
+
+    public void getRandomMeal(){
+
+
+
+        Retrofit apiClient = APIClient.getClient();
+        APIinterface apiInterface = apiClient.create(APIinterface.class);
+
+
+
+        apiInterface.getRandomMeal()
+                .subscribeOn(Schedulers.io())
+                .repeat(10)
+                .distinct()
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<RootMeal>>() {
+                               @Override
+                               public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                               }
+
+                               @Override
+                               public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<RootMeal> rootMeal) {
+                                   for (RootMeal randomMealResponse : rootMeal){
+                                       mealArrayListRondome.add(randomMealResponse.getMeals().get(0));
+
+                                   }
+                                   succsessMealList(mealArrayListRondome);
+
+                               }
+
+                               @Override
+                               public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                               }
+                           } );
+
+
+    }
+
+
+    void succsessMealList(List<Meal> filterdListMeal){
+
+
+        if(filterdListMeal==null) {
+            Toast.makeText(getContext(), "No Meals Available", Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            if (!filterdListMeal.isEmpty()) {
+                Toast.makeText(getContext(), "Done"  , Toast.LENGTH_LONG).show();
+
+                categoryRecyclerView.new Recycler();
+                categoryRecyclerView.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManagerSearch2 = new LinearLayoutManager(requireContext());
+                categoryRecyclerView.setLayoutManager(linearLayoutManagerSearch2);
+                linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
+
+                filteredMealAdapterSearch = new FilteredMealAdapterSearch(mealArrayListRondome,Home_Fragment.this);
+                categoryRecyclerView.setAdapter(filteredMealAdapterSearch);
+
+            }
+            else  if (filterdListMeal.size()==0)  {
+
+
+                Toast.makeText(getContext(), "There are no meals available", Toast.LENGTH_LONG).show();
+            }}
+    }
+
+    @Override
+    public void onClickItem(Long idMeal) {
+        Log.i("FilteredMealAdapterSearch", "onClick: Search Frag "+idMeal);
+    }
 
 }

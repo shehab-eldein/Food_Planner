@@ -27,6 +27,6 @@ public interface APIinterface {
 /////////////////////////////////////////////////
 
     @GET("random.php")
-    Observable<RootMeal> getRandomMeal();
+    Single<RootMeal> getRandomMeal();
 
 }

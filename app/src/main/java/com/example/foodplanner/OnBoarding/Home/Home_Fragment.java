@@ -161,8 +161,8 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
             public void onClick(View view) {
                 repo.deleteAllFav();
                 repo.deleteAllList();
-                goSigns();
-                CurrentUser.setIsGuest(false);
+               // goSigns();
+               // CurrentUser.setIsGuest(false);
 
             }
         });
@@ -227,13 +227,14 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     }
 
     @Override
-    public void succsessFireStoreList(List<MealList> meals) {
+    public void succsessFireStoreList(ArrayList<MealList> meals) {
         for(MealList meal:meals) {
-            meal.setDay("Sunday");
+           // meal.setDay("Sunday");
             repo.insertMealList(meal);
-            //repo.insertFav(new Meal(meal.getStrMeal(),meal.getStrMealThumb(),meal.getIdMeal(),"hello","egypt"));
         }
+
         Loading.dismiss();
+
     }
 
     @Override

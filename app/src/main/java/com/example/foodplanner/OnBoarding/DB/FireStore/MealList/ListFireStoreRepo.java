@@ -1,6 +1,7 @@
 package com.example.foodplanner.OnBoarding.DB.FireStore.MealList;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -20,20 +21,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-public class ListFireStoreRepo implements DetailPresenter {
+public class ListFireStoreRepo   {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth firebaseAuth;
     DocumentReference docRef;
     NetworkRepo helperr ;
     List<MealList> days_meals;
     ListFireStorePresenter listFireStorePresenter;
-    ArrayList<String> idDays ;
-
-
 
     public ListFireStoreRepo(ListFireStorePresenter fireStorePresenter) {
         this.listFireStorePresenter = fireStorePresenter;
@@ -42,55 +43,30 @@ public class ListFireStoreRepo implements DetailPresenter {
     public ListFireStoreRepo() {
 
     }
-
-
-    @Override
-    public void succsessDetails(ArrayList<Detail> details) {
-
-        days_meals.add(new MealList(details.get(0).strMeal,details.get(0).strMealThumb,Long.parseLong(details.get(0).idMeal)));
-        if (days_meals.size() == idDays.size()) {
-            listFireStorePresenter.succsessFireStoreList(days_meals);
-
-            // fav_meals.removeAll(fav_meals);
-        }
-
-    }
-    @Override
-    public void failDetails(String err) {
-        listFireStorePresenter.failFireStoreList(err);
-    }
-
-
-    private void insertMealListDay(String id) {
-        ArrayList<String> Saturday  = new ArrayList<>();
-        ArrayList<String> Sunday  = new ArrayList<>();
-        ArrayList<String> Monday  = new ArrayList<>();
-        ArrayList<String> Tuesday  = new ArrayList<>();
-        ArrayList<String> Wendnesday  = new ArrayList<>();
-        ArrayList<String> Thursday  = new ArrayList<>();
-        ArrayList<String> Friday  = new ArrayList<>();
-        Sunday.add(id);
-        MealListFS mealListFS = new MealListFS(Saturday,Sunday,Monday,Tuesday,Wendnesday,Thursday,Friday);
-        db.collection("Fav").document(CurrentUser.getEmail())
+    private void insertMealListDay(MealList meal) {
+        ArrayList<MealList> meals = new ArrayList<>();
+        MealListFS mealListFS = new MealListFS(meals);
+        db.collection("Meals").document(CurrentUser.getEmail())
                 .set(mealListFS)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(ge, "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
+                        Log.i("hi", "onSuccess: The Meal Added To Favorite");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //Toast.makeText(requireContext(), "The Meal  Failed Added To Favorite Try Again", Toast.LENGTH_LONG).show();
 
+                        Log.i("hi", "onFail: can't add Meal  To Favorite");
                     }
                 });
     }
-    private void updateMealList(String id) {
-        db.collection("Fav")
+    private void updateMealList(MealList meal) {
+        db.collection("Meals")
                 .document(CurrentUser.getEmail())
-                .update("sunday", FieldValue.arrayUnion(id) ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .update("Meals", FieldValue.arrayUnion(meal) ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         // Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
@@ -102,8 +78,9 @@ public class ListFireStoreRepo implements DetailPresenter {
                     }
                 });
     }
-    public void addMealListMeal(String id) {
-        docRef = db.collection("Fav").document(CurrentUser.getEmail());
+    public void addMealListMeal(MealList meal) {
+
+        docRef = db.collection("Meals").document(CurrentUser.getEmail());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -111,10 +88,10 @@ public class ListFireStoreRepo implements DetailPresenter {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d("FireStore", "Document exists!");
-                        updateMealList(id);
+                        updateMealList(meal);
                     } else {
                         Log.d("FireStore", "Document does not exist!");
-                        addMealListMeal(id);
+                        insertMealListDay(meal);
                     }
                 } else {
                     Log.d("FireStore", "Failed with: ", task.getException());
@@ -122,11 +99,11 @@ public class ListFireStoreRepo implements DetailPresenter {
             }
         });
     }
-    public void deleteMealListMeal(String id) {
-        db.collection("Fav")
+    public void deleteMealListMeal(MealList meal) {
+        db.collection("Meals")
                 .document(CurrentUser.getEmail())
 
-                .update("sunday", FieldValue.arrayRemove(id)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .update("Meals", FieldValue.arrayRemove(meal)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         // Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
@@ -139,22 +116,35 @@ public class ListFireStoreRepo implements DetailPresenter {
                 });
 
     }
+
     public void getMealList() {
-        days_meals = new ArrayList<>();
-        docRef = db.collection("Fav").document(CurrentUser.getEmail());
+        docRef = db.collection("Meals").document(CurrentUser.getEmail());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        idDays = (ArrayList<String>) document.get("sunday");
-                        //document.toObject(MealListFS.class);
-                        //Long id = Long.parseLong(idArray.get(0));
-                        for (String id :idDays) {
-                            helperr = new NetworkRepo(ListFireStoreRepo.this,Long.parseLong(id));
-                            helperr.getMealsDetails();
+
+
+                        Map<String, Object> map = document.getData();
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            if (entry.getKey().equals("Meals")) {
+                                //Log.d("TAG", entry.getValue().toString());
+                                MealList meal =entry.getValue().
+                                Log.d("DATAA", ""+  entry.getValue().toString());
+                                days_meals.add(entry.getValue());
+                            }
                         }
+                        //document.get("Meals");
+                    // MealListFS meals =  document.toObject(MealListFS.class);;
+
+                        //MealList mealList = (MealList) meals.get(0);
+
+                        //listFireStorePresenter.succsessFireStoreList(meals);
+                        //meals = (MealListFS) document.toObject(MealListFS.class);
+                        //Long id = Long.parseLong(idArray.get(0));
+
 
                     } else {
                         Log.d("DATA", "No such document");
@@ -164,6 +154,8 @@ public class ListFireStoreRepo implements DetailPresenter {
                 }
             }
         });
+
+
 
     }
 

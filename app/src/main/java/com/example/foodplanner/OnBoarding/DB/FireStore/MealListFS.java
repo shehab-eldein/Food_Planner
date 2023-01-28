@@ -2,85 +2,26 @@ package com.example.foodplanner.OnBoarding.DB.FireStore;
 
 import androidx.annotation.Nullable;
 
+import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
+
 import java.util.ArrayList;
 
 public class MealListFS {
-
-    private ArrayList<String> Saturday;
-    private ArrayList<String> Sunday;
-    private ArrayList<String> Monday;
-    private ArrayList<String> Tuesday;
-    private ArrayList<String> Wendnesday;
-    private ArrayList<String> Thursday;
-    private ArrayList<String> Friday;
+    public ArrayList<MealList> meals;
 
     public MealListFS() {
     }
 
 
-    public MealListFS(ArrayList<String> saturday, ArrayList<String> sunday, ArrayList<String> monday, ArrayList<String> tuesday, ArrayList<String> wendnesday, ArrayList<String> thursday, ArrayList<String> friday) {
-        Saturday = saturday;
-        Sunday = sunday;
-        Monday = monday;
-        Tuesday = tuesday;
-        Wendnesday = wendnesday;
-        Thursday = thursday;
-        Friday = friday;
+    public MealListFS(ArrayList<MealList> meals) {
+        this.meals = meals;
     }
 
-    public ArrayList<String> getSaturday() {
-        return Saturday;
+    public ArrayList<MealList> getMeals() {
+        return meals;
+    }
+    public void setMeals(ArrayList<MealList> meals) {
+        this.meals = meals;
     }
 
-    public void setSaturday(ArrayList<String> saturday) {
-        Saturday = saturday;
-    }
-
-    public ArrayList<String> getSunday() {
-        return Sunday;
-    }
-
-    public void setSunday(ArrayList<String> sunday) {
-        Sunday = sunday;
-    }
-
-    public ArrayList<String> getMonday() {
-        return Monday;
-    }
-
-    public void setMonday(ArrayList<String> monday) {
-        Monday = monday;
-    }
-
-    public ArrayList<String> getTuesday() {
-        return Tuesday;
-    }
-
-    public void setTuesday(ArrayList<String> tuesday) {
-        Tuesday = tuesday;
-    }
-
-    public ArrayList<String> getWendnesday() {
-        return Wendnesday;
-    }
-
-    public void setWendnesday(ArrayList<String> wendnesday) {
-        Wendnesday = wendnesday;
-    }
-
-    public ArrayList<String> getThursday() {
-        return Thursday;
-    }
-
-    public void setThursday(ArrayList<String> thursday) {
-        Thursday = thursday;
-    }
-
-    public ArrayList<String> getFriday() {
-        return Friday;
-    }
-
-    public void setFriday(ArrayList<String> friday) {
-        Friday = friday;
-    }
 }

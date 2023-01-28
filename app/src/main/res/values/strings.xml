@@ -136,5 +136,6 @@
     <string name="search_by_ingredients">Search by Ingredients</string>
     <string name="search_by_meal">Filtred Search Meals</string>
     <string name="confirmPass">Confirm Password</string>
+    <string name="Days">Day</string>
 
 </resources>

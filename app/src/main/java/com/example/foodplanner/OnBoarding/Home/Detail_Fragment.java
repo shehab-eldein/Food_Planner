@@ -9,8 +9,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
@@ -32,7 +36,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.ArrayList;
 
 
-public class Detail_Fragment extends Fragment implements DetailPresenter {
+public class Detail_Fragment extends Fragment implements DetailPresenter, AdapterView.OnItemSelectedListener {
     Long id;
     NetworkRepo helperr ;
     TextView mealName,mealArea,mealInstructions,favIcon,meal_list;
@@ -44,6 +48,9 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     RoomRepo repo;
     FavFireStoreRepo fireRepo;
     ListFireStoreRepo listFireStoreRepo;
+    String[] days = {"Sunday", "Monday", "Tuesday", "Wendnesday","Thursday","Friday","Saturday"};
+    String day = "Sunday";
+    Spinner spino;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +73,24 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
         connectDesign(view);
         getLifecycle().addObserver(mealVidio);
         id = Detail_FragmentArgs.fromBundle(getArguments()).getID();
-        helperr = new NetworkRepo(this,id);
-        helperr.getMealsDetails();
+
+
         favBtnClicked();
         ListBtnClicked();
         checkGeust();
+        setSpinnerAdapter();
+        setPresenter();
 
+    }
+    void setPresenter() {
+        helperr = new NetworkRepo(this,id);
+        helperr.getMealsDetails();
+    }
+    void setSpinnerAdapter() {
+        spino.setOnItemSelectedListener(this);
+        ArrayAdapter ad = new ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item,days);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spino.setAdapter(ad);
     }
     void checkGeust() {
         if (CurrentUser.getIsGuest()) {
@@ -98,7 +117,7 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
                     @Override
                     public void onClick(View view) {
                         repo.insertMealList(mealList);
-                        listFireStoreRepo.addMealListMeal(String.valueOf( mealList.getIdMeal()));
+                        listFireStoreRepo.addMealListMeal(mealList);
                     }
                 }
         );
@@ -112,6 +131,8 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
         mealVidio = view.findViewById(R.id.videoView);
         favIcon = view.findViewById(R.id.fav_icon);
         meal_list=view.findViewById(R.id.meal_list);
+        spino = view.findViewById(R.id.spinnerDays);
+
     }
 
 
@@ -134,7 +155,7 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
         });
 
         /////todo drop list
-        mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),"Sunday");
+        mealList=new MealList(details.get(0).strMeal,details.get(0).getStrMealThumb(),Long.valueOf(details.get(0).idMeal),day);
         mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),details.get(0).strInstructions,details.get(0).strArea);
 
     }
@@ -145,5 +166,16 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(requireContext(), days[position], Toast.LENGTH_LONG)
+                .show();
+        day = days[position];
 
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

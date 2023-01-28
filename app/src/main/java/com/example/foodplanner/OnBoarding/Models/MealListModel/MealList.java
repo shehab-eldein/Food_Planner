@@ -12,20 +12,20 @@ public class MealList  {
 
     @ColumnInfo(name = "id")
     @PrimaryKey
-    private Integer id;
+    public Integer id;
 
     @ColumnInfo(name = "day")
     @Nonnull
-    private String day;
+    public String day;
 
     @ColumnInfo(name = "idMeal")
-   private Long idMeal;
+   public Long idMeal;
 
     @ColumnInfo(name = "strMeal")
-    private String strMeal;
+    public String strMeal;
 
     @ColumnInfo(name = "strMealThumb")
-    private String strMealThumb;
+    public String strMealThumb;
 
 
 

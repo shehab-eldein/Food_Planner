@@ -2,7 +2,6 @@ package com.example.foodplanner.OnBoarding;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -10,23 +9,17 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Context;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.foodplanner.OnBoarding.Home.Home_Fragment;
-import com.example.foodplanner.OnBoarding.Utilites.AppStatus;
 import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 

@@ -101,7 +101,7 @@ public class MealList_Fragment extends Fragment implements OnDayClickListener, O
     @Override
     public void onClickMealList(MealList mealList, int position) {
         repo.deleteMealFromList(mealList);
-        listFireStoreRepo.deleteMealListMeal(String.valueOf(mealList.getIdMeal()));
+        listFireStoreRepo.deleteMealListMeal(mealList);
         mealList_meals.remove(mealList);
         mealListAdapter.notifyItemRemoved(position);
     }

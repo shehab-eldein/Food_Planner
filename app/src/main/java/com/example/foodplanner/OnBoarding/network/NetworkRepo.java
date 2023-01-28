@@ -23,6 +23,7 @@ public class NetworkRepo {
     CategoryPresenter categoryDelegate;
     DetailPresenter detailDelegate;
     String[] random_countrys = new String[]{"British", "French", "Egyptian", "Japanese", "Croatian", "Canadian", "Indian", "Polish"};
+
     ArrayList<Meal> meals;
     ArrayList<Category> categories;
     ArrayList<Detail> details;

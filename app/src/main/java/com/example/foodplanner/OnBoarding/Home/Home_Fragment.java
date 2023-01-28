@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
 import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Utilites.Loading;
@@ -38,6 +39,9 @@ import com.example.foodplanner.OnBoarding.DB.FireStore.Favorite.FavFireStoreRepo
 import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStorePresenter;
 import com.example.foodplanner.OnBoarding.DB.FireStore.MealList.ListFireStoreRepo;
 import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
+import com.example.foodplanner.OnBoarding.network.APIClient;
+import com.example.foodplanner.OnBoarding.network.APIinterface;
+import com.example.foodplanner.OnBoarding.network.APIinterfaceLists;
 import com.example.foodplanner.OnBoarding.network.Presenters.CategoryPresenter;
 import com.example.foodplanner.OnBoarding.network.NetworkRepo;
 import com.example.foodplanner.OnBoarding.network.Presenters.RandomPresenter;
@@ -49,6 +53,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function3;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 
 public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter
@@ -71,6 +84,7 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     FavFireStoreRepo fireStoreRepo;
     ListFireStoreRepo listFireStoreRepo;
     TextView userName;
+
 
 
 

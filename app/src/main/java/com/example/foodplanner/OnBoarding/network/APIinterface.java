@@ -21,7 +21,12 @@ public interface APIinterface {
 
     @GET("lookup.php")
     Observable<DetailRoot> getByID(@Query("i") Long id);
+
     @GET("list.php?i=list")
     Single<RootMealIngredient> getingrdiants();
+/////////////////////////////////////////////////
+
+    @GET("random.php")
+    Observable<RootMeal> getRandomMeal();
 
 }

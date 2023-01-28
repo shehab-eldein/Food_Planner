@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.OnBoarding.Models.AreaModel.Area;
@@ -31,8 +30,8 @@ import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
 
 
-import com.example.foodplanner.OnBoarding.View.IngredientView.IngredientAdapter;
-import com.example.foodplanner.OnBoarding.View.MealFilterdView.MealAdapterSearch;
+import com.example.foodplanner.OnBoarding.View.MealFilterdView.FilteredMealAdapterSearch;
+import com.example.foodplanner.OnBoarding.View.MealFilterdView.OnFilteredSearchMealsClick;
 import com.example.foodplanner.OnBoarding.View.viewSearch.OnSearchClick;
 
 import com.example.foodplanner.OnBoarding.View.viewSearch.SearchAdapter;
@@ -54,21 +53,23 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class Search_Fragment extends Fragment implements OnSearchClick {
+public class Search_Fragment extends Fragment implements OnSearchClick , OnFilteredSearchMealsClick {
 
 
     RecyclerView recyclerView_result;
     SearchAdapter searchAdapter;
     EditText search;
     RecyclerView recyclerViewResults;
-    MealAdapterSearch mealAdapterSearch;
-
+    FilteredMealAdapterSearch filteredMealAdapterSearch;
     List<Ingredient> ingredients = new ArrayList<>();
     List<String> ingredientQuery = null;
     List<Area> areas = new ArrayList<>();
     List<String> areaQuery = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
     List<String> categoryQuery = new ArrayList<>();
+
+    OnFilteredSearchMealsClick onFilteredSearchMealsClick;
+
     private static final String TAG = "Search_Fragment";
 
     @Override
@@ -374,8 +375,8 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
                 recyclerViewResults.setLayoutManager(linearLayoutManagerSearch2);
                 linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
 
-                mealAdapterSearch= new MealAdapterSearch(filterdListMeal);
-                recyclerViewResults.setAdapter(mealAdapterSearch);
+                filteredMealAdapterSearch = new FilteredMealAdapterSearch(filterdListMeal,Search_Fragment.this);
+                recyclerViewResults.setAdapter(filteredMealAdapterSearch);
 
             }
             else  if (filterdListMeal.size()==0)  {
@@ -385,6 +386,10 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
             }}
     }
 
+    @Override
+    public void onClickItem(Long idMeal) {
+        Log.i("FilteredMealAdapterSearch", "onClick: Search Frag "+idMeal);
+    }
 }
 
 

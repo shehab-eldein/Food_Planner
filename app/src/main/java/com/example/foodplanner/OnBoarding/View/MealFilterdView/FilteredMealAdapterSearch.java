@@ -1,5 +1,6 @@
 package com.example.foodplanner.OnBoarding.View.MealFilterdView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MealAdapterSearch extends RecyclerView.Adapter<MealAdapterSearch.Holder>  {
+public class FilteredMealAdapterSearch extends RecyclerView.Adapter<FilteredMealAdapterSearch.Holder>  {
     private List<Meal> list = new ArrayList<>();
+    OnFilteredSearchMealsClick onFilteredSearchMealsClick;
 
 
-    public MealAdapterSearch(List<Meal> list){
+    public FilteredMealAdapterSearch(List<Meal> list,OnFilteredSearchMealsClick onFilteredSearchMealsClick){
         this.list = list;
+        this.onFilteredSearchMealsClick=onFilteredSearchMealsClick;
 
     }
 
@@ -40,8 +43,9 @@ public class MealAdapterSearch extends RecyclerView.Adapter<MealAdapterSearch.Ho
 
         Meal meal = list.get(position);
         holder.meal_name_tv.setText(meal.getStrMeal());
-        Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
 
+        Glide.with(holder.meal_photo.getContext()).load(meal.getStrMealThumb()).into(holder.meal_photo);
+        holder.itemView.setTag(meal.getIdMeal());
 
     }
 
@@ -64,11 +68,14 @@ public class MealAdapterSearch extends RecyclerView.Adapter<MealAdapterSearch.Ho
             meal_photo = itemView.findViewById(R.id.meal_image);
 
             meal_name_tv=itemView.findViewById(R.id.meal_name);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-
+        public void onClick(View view) {
+            onFilteredSearchMealsClick.onClickItem((Long) view.getTag());
+            Log.i("FilteredMealAdapterSearch", "onClick: FilteredMealAdapterSearch "+view.getTag());
         }
     }
 

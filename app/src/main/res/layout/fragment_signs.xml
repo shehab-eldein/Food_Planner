@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OnBoarding.Authintication.Signs_Fragment"
-    android:background="@color/lightGrayBackGround">
+    android:background="@color/lightGrayBackGround"
+    tools:context=".OnBoarding.Authintication.Signs_Fragment">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -99,6 +99,21 @@
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintStart_toStartOf="@+id/view" />
+
+    <Button
+        android:id="@+id/guestBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/roundstyle"
+        android:fontFamily="@font/poppins_bold"
+        android:text="guest"
+        android:textColor="@color/myOrange"
+        android:textSize="10sp"
+        app:backgroundTint="@color/lightGrayBackGround"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"

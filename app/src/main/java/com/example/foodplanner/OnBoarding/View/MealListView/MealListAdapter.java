@@ -24,11 +24,8 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
     private List<MealList> meal_list;
     private List<Meal> fav_meals;
     Boolean isFav = false;
-
     private OnMeallistClickListener onMeallistClickListener;
-
     private OnClickMealListenerFav onClickMealListenerFav;
-
     public MealListAdapter(List<MealList> meal_list,OnMeallistClickListener onMeallistClickListener){
         this.meal_list=meal_list;
 
@@ -91,7 +88,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
         return meal_list.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder  {
+    public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView meal_photo;
         public TextView  meal_name_tv,meal_day;
 
@@ -111,7 +108,11 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
         }
 
 
+        @Override
+        public void onClick(View v) {
 
+
+        }
     }
 }
 

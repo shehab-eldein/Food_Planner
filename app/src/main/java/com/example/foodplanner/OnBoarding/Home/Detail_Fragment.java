@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
@@ -73,7 +74,14 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
         helperr.getMealsDetails();
         favBtnClicked();
         ListBtnClicked();
+        checkGeust();
 
+    }
+    void checkGeust() {
+        if (CurrentUser.getIsGuest()) {
+            favIcon.setVisibility(View.GONE);
+            meal_list.setVisibility(View.GONE);
+        }
     }
 
 

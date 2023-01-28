@@ -103,7 +103,17 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
       //  Loading.activeLoading(requireContext());
         setCurrentUser();
         backeUpBtnClicked();
-        userName.setText(CurrentUser.getEmail());
+        setUserName();
+
+
+    }
+    void setUserName() {
+        if (CurrentUser.getIsGuest()) {
+            userName.setText("Guest");
+            backeUp.setVisibility(View.GONE);
+        } else {
+            userName.setText(CurrentUser.getEmail());
+        }
 
     }
     void connectDesign(View view) {

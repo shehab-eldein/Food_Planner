@@ -23,6 +23,7 @@ import com.example.foodplanner.OnBoarding.Home.Home_Fragment;
 import com.example.foodplanner.OnBoarding.Utilites.AppStatus;
 import com.example.foodplanner.OnBoarding.Utilites.ConnectionReceiver;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
+import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -104,10 +105,19 @@ View view;
                                 Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.search_Fragment);
                                 return true;
                             case R.id.list:
-                                Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.mealList_Fragment);
+                                if (CurrentUser.getIsGuest()) {
+                                    Loading.guestAlert(MainActivity.this);
+                                }else{
+                                    Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.mealList_Fragment);
+                                }
                                 return true;
                             case R.id.fav:
-                                Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.favorite_Fragment);
+                                if (CurrentUser.getIsGuest()) {
+                                    Loading.guestAlert(MainActivity.this);
+                                }else{
+                                    Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.favorite_Fragment);
+                                }
+
                                 return true;
                         }
 

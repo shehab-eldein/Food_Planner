@@ -196,7 +196,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                      //  closeKeyboard();
+                       closeKeyboard();
                     }
                 });
 

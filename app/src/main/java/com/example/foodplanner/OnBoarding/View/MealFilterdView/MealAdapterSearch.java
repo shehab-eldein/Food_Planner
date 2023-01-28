@@ -50,7 +50,7 @@ public class MealAdapterSearch extends RecyclerView.Adapter<MealAdapterSearch.Ho
         return list.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder{
+    public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
 
@@ -64,6 +64,11 @@ public class MealAdapterSearch extends RecyclerView.Adapter<MealAdapterSearch.Ho
             meal_photo = itemView.findViewById(R.id.meal_image);
 
             meal_name_tv=itemView.findViewById(R.id.meal_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 

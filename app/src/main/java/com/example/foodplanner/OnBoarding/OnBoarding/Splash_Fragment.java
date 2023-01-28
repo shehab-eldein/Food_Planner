@@ -52,8 +52,8 @@ public class Splash_Fragment extends Fragment {
             @Override
             public void run() {
 
-                // Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.onBoardingBase_Fragment);
-                navigation();
+                 Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.onBoardingBase_Fragment);
+                //navigation();
             }
         }, 5000);
 

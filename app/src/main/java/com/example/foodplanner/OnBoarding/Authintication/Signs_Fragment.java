@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.foodplanner.OnBoarding.MainActivity;
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.R;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
@@ -43,13 +45,11 @@ import org.w3c.dom.Text;
 
 public class Signs_Fragment extends Fragment {
 
-    Button signInnBtn, googleBtn, fbBtn;
+    Button signInnBtn, googleBtn, fbBtn,guestBtn;
     TextView signUpBtn;
     FirebaseAuth firebaseAuth;
     GoogleSignInClient googleSignInClient;
     ProgressDialog progress;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,20 +73,24 @@ public class Signs_Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
         activeDesign(view);
         googleBtnTapped();
         signUpBtnTapped();
         signInBtnTapped();
         fbBtnTapped();
-
-
+        guestBtnTapped();
     }
 
 
-
+ void guestBtnTapped() {
+        guestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CurrentUser.setIsGuest(true);
+                Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(R.id.home_Fragment);
+            }
+        });
+ }
     public void signInBtnTapped() {
         signInnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +140,7 @@ public class Signs_Fragment extends Fragment {
         googleBtn = view.findViewById(R.id.google_Btn);
         fbBtn = view.findViewById(R.id.faceBook_Btn);
         signUpBtn = view.findViewById(R.id.signUP_textView);
+        guestBtn = view.findViewById(R.id.guestBtn);
     }
 
 

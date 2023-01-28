@@ -16,25 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.R;
 
 
 public class Splash_Fragment extends Fragment {
-
-
     ImageView logo;
-
-    //////////////////////////////////
+    LottieAnimationView gifImageView;
     SharedPreferences sharedPref;
     Boolean Registered;
-    //////////////////////////////////
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
     }
 
@@ -42,31 +38,15 @@ public class Splash_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_splash_, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        logo = view.findViewById(R.id.logo_Splash);
-        /////////////////////////////////////////////
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         Registered = sharedPref.getBoolean("Registered", false);
-//        String s=sharedPref.getString("Email", "Does not exist");
-
-/*
-        if (!Registered)
-        {
-            Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.onBoardingBase_Fragment);
-        }else {
-            Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.home_Fragment);
-        }*/
-
-        ////////////////////////////////////
-
-        logo.animate().rotation(360).setDuration(1500).start();
+        gifImageView = view.findViewById(R.id.gif_splash2);
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -75,7 +55,7 @@ public class Splash_Fragment extends Fragment {
                 // Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(R.id.onBoardingBase_Fragment);
                 navigation();
             }
-        }, 4000);
+        }, 5000);
 
     }
 

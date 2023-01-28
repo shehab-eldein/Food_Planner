@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:context=".OnBoarding.Search.Search_Fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".OnBoarding.Search.Search_Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,15 +16,37 @@
 
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="40dp"
-
-            android:src="@drawable/chef_hat"
+            android:id="@+id/imageView10"
+            android:layout_width="406dp"
+            android:layout_height="305dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background2" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="47dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="150dp"
+            android:text="@string/food"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/planner"
+            android:textColor="@color/custom"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView18"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <EditText
             android:id="@+id/search_view"
@@ -48,61 +70,33 @@
             android:id="@+id/search_label_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:fontFamily="cursive"
             android:text="@string/search_lebal"
-            android:textColor="@color/black"
-            android:textSize="30sp"
+            android:textColor="@color/myOrange"
+            android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.069"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-        <TextView
-            android:id="@+id/search_by_ingredients_label_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/search_by_ingredients"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_reslut_rv" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ingredients_rv"
-            android:layout_width="0dp"
-            android:layout_height="230dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_by_ingredients_label_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
         <TextView
             android:id="@+id/search_by_meal_label_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@string/search_by_meal"
-            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="Results"
+            android:textColor="@color/myOrange"
             android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.039"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredients_rv"
 
-            />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/search_view"
+            app:layout_constraintTop_toBottomOf="@+id/search_reslut_rv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filterd_rv"
             android:layout_width="0dp"
-            android:layout_height="345dp"
-            android:layout_marginTop="32dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.438"
@@ -112,13 +106,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_reslut_rv"
             android:layout_width="0dp"
-            android:layout_height="288dp"
+            android:layout_height="200dp"
             android:layout_marginTop="30dp"
 
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_view"
             tools:itemCount="20" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout> </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

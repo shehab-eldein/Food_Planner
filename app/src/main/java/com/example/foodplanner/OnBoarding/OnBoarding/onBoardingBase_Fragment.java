@@ -61,7 +61,7 @@ public class onBoardingBase_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Navigation.findNavController(v).navigate(R.id.action_onBoardingBase_Fragment_to_signs_Fragment);
+               Navigation.findNavController(v).navigate(R.id.action_onBoardingBase_Fragment_to_signs_Fragment);
 
                 //finish();
 

@@ -45,9 +45,7 @@ View view;
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
         handelButtomNavigation();
-
-
-
+        handelNavigationVisual();
         checkConnection();
 
     }
@@ -66,6 +64,28 @@ View view;
         checkConnection();
 
     }
+    void handelNavigationVisual(){
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                switch (destination.getId()){
+                    case R.id.splash_Fragment:
+                    case R.id.onBoardingBase_Fragment:
+                    case R.id.signs_Fragment:
+                    case R.id.signIn_Fragment2:
+                    case R.id.signUp_Fragment2:
+                        bottomNavigationView.setVisibility(View.GONE);
+                        break;
+                    default:
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+    }
+
+
     private void activeNavigation() {
          navController = Navigation.findNavController(this,R.id.nav_host_fragment);
          NavigationUI.setupActionBarWithNavController(this,navController);

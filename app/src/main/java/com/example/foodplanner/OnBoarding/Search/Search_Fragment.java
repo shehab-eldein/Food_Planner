@@ -1,5 +1,6 @@
 package com.example.foodplanner.OnBoarding.Search;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,29 +55,22 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Search_Fragment extends Fragment implements OnSearchClick {
-    IngredientAdapter ingredientAdapter;
-    List<Ingredient> ingredients = new ArrayList<>();
-    RecyclerView recyclerView;
+
+
     RecyclerView recyclerView_result;
     SearchAdapter searchAdapter;
-    List<String> ingredientQuery = null;
-    TextView search_ing_tv;
     EditText search;
-    //
-    String filterdMeal="beef";
-    //
-//
-//    List<Meal> filterdIngredMealsQuery = new ArrayList<>();
     RecyclerView recyclerViewResults;
     MealAdapterSearch mealAdapterSearch;
 
+    List<Ingredient> ingredients = new ArrayList<>();
+    List<String> ingredientQuery = null;
     List<Area> areas = new ArrayList<>();
     List<String> areaQuery = new ArrayList<>();
-
     List<Category> categories = new ArrayList<>();
     List<String> categoryQuery = new ArrayList<>();
-
     private static final String TAG = "Search_Fragment";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +87,12 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        recyclerView = view.findViewById(R.id.ingredients_rv);
-
         search = view.findViewById(R.id.search_view);
-        search_ing_tv=view.findViewById(R.id.search_by_ingredients_label_tv);
         recyclerView_result=view.findViewById(R.id.search_reslut_rv);
         recyclerView_result.setVisibility(View.GONE);
         recyclerViewResults=view.findViewById(R.id.filterd_rv);
 
-        recyclerView.setVisibility(View.GONE);
+
 
         Retrofit apiClient = APIClient.getClient();
         APIinterfaceLists apiInterface = apiClient.create(APIinterfaceLists.class);
@@ -135,7 +126,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
                 });
 
 
-///////////////////////////////////////////////////////////////////////
+       ///////////////////////////////////////////////////////////////////////
 
         apiInterface.getAreas()
                 .subscribeOn(Schedulers.io())
@@ -159,11 +150,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
 
                     }
                 });
-
-
-
         ///////////////////////////////////////////////////////////////////////
-
         apiInterface.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -186,12 +173,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
 
                     }
                 });
-
-
-
         ////////////////////////////////////////////////////////////
-
-
         Observable < String > observable_it = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(@io.reactivex.rxjava3.annotations.NonNull ObservableEmitter<String> emitter) throws Throwable {
@@ -214,7 +196,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-
+                      //  closeKeyboard();
                     }
                 });
 
@@ -278,7 +260,28 @@ public class Search_Fragment extends Fragment implements OnSearchClick {
     @Override
     public void onClickItem(String searchItem,int check) {
         getMealsAPI(searchItem,check);
+        closeKeyboard();
+        recyclerView_result.setVisibility(View.GONE);
 
+    }
+    private void closeKeyboard()
+    {
+        // this will give us the view
+        // which is currently focus
+        // in this layout
+        View view = getActivity().getCurrentFocus();
+
+        // if nothing is currently
+        // focus then this will protect
+        // the app from crash
+        if (view != null) {
+
+            // now assign the system
+            // service to InputMethodManager
+            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(
+                            view.getWindowToken(), 0); }
     }
 
   public void getMealsAPI(String mealFilter,int check){

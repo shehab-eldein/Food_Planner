@@ -7,13 +7,15 @@
 
     <Button
         android:id="@+id/skipButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:background="#00000000"
-        android:text="Skip"
-        android:textColor="@color/myOrange"
-        android:textSize="12sp" />
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/roundstyle"
+        android:fontFamily="@font/poppins_bold"
+        android:text="START"
+        android:textColor="@color/lightGrayBackGround"
+        android:textSize="16sp" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/slideViewPager"
@@ -31,10 +33,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_bold"
         android:text="FOOD Planner"
-        android:textColor="@color/GrayFont"
+        android:textColor="@color/myOrange"
         android:textSize="34sp" />
 
     <LinearLayout
@@ -47,14 +49,6 @@
 
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/chef_hat" />
 
 
 </FrameLayout>

@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    
+
     <Button
         android:id="@+id/google_Btn"
         android:layout_width="wrap_content"
@@ -25,6 +25,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/roundstyle"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/Google"
         app:backgroundTint="@color/black"
         app:icon="@drawable/google"
@@ -39,6 +40,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="50dp"
         android:background="@drawable/roundstyle"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/facebook"
         android:translationY="50dp"
         app:backgroundTint="@color/facebook"
@@ -51,6 +53,8 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
         android:background="@color/GrayFont"
         android:backgroundTint="@color/GrayFont"
@@ -62,6 +66,8 @@
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@color/GrayFont"
         android:backgroundTint="@color/GrayFont"
         app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -72,6 +78,8 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="-10dp"
         android:text="@string/signInWith"
         android:textSize="16sp"
@@ -83,13 +91,14 @@
         android:id="@+id/signIn_Btn"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/roundstyle"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/email"
         app:backgroundTint="@color/myOrange"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="@+id/signUP_textView"
-        app:layout_constraintStart_toStartOf="@+id/textView5" />
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view" />
 
     <TextView
         android:id="@+id/textView5"

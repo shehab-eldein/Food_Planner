@@ -39,8 +39,6 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     ImageView mealImage;
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
-    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //DocumentReference docRef;
     MealList mealList;
     Meal mealFav;
     RoomRepo repo;
@@ -58,7 +56,6 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         Loading.activeLoading(requireContext());
         return inflater.inflate(R.layout.fragment_detail_, container, false);
     }
@@ -67,7 +64,6 @@ public class Detail_Fragment extends Fragment implements DetailPresenter {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         connectDesign(view);
-        //docRef = db.collection("Fav").document(CurrentUser.getEmail());
         getLifecycle().addObserver(mealVidio);
         id = Detail_FragmentArgs.fromBundle(getArguments()).getID();
         helperr = new NetworkRepo(this,id);

@@ -53,6 +53,11 @@ View view;
 
 
     @Override
+    public void onBackPressed() {
+       return;
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 

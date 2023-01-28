@@ -145,11 +145,10 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-              repo.deleteAllFav();
-              repo.deleteAllList();
-              goSigns();
-
+                repo.deleteAllFav();
+                repo.deleteAllList();
+                goSigns();
+                CurrentUser.setIsGuest(false);
 
             }
         });
@@ -158,12 +157,6 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
     public void goSigns() {
         Navigation.findNavController(getView()).navigate(R.id.signs_Fragment);
     }
-
-
-
-
-
-
 
     @Override
     public void succsessRandoms(ArrayList<Meal> meals) {

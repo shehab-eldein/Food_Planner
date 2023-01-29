@@ -63,6 +63,12 @@
         <action
             android:id="@+id/action_home_Fragment_to_detail_Fragment"
             app:destination="@id/detail_Fragment" />
+        <action
+            android:id="@+id/action_home_Fragment_to_detail_Fragment2"
+            app:destination="@id/detail_Fragment" />
+        <action
+            android:id="@+id/action_home_Fragment_to_detail_Fragment3"
+            app:destination="@id/detail_Fragment" />
     </fragment>
     <fragment
         android:id="@+id/detail_Fragment"
@@ -91,15 +97,27 @@
         android:id="@+id/favorite_Fragment"
         android:name="com.example.foodplanner.OnBoarding.Favorite.Favorite_Fragment"
         android:label="fragment_favorite_"
-        tools:layout="@layout/fragment_favorite_" />
+        tools:layout="@layout/fragment_favorite_" >
+        <action
+            android:id="@+id/action_favorite_Fragment_to_detail_Fragment"
+            app:destination="@id/detail_Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/mealList_Fragment"
         android:name="com.example.foodplanner.OnBoarding.MealList.MealList_Fragment"
         android:label="fragment_meal_list_"
-        tools:layout="@layout/fragment_meal_list_" />
+        tools:layout="@layout/fragment_meal_list_" >
+        <action
+            android:id="@+id/action_mealList_Fragment_to_detail_Fragment"
+            app:destination="@id/detail_Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/search_Fragment"
         android:name="com.example.foodplanner.OnBoarding.Search.Search_Fragment"
         android:label="fragment_search_"
-        tools:layout="@layout/fragment_search_" />
+        tools:layout="@layout/fragment_search_" >
+        <action
+            android:id="@+id/action_search_Fragment_to_detail_Fragment"
+            app:destination="@id/detail_Fragment" />
+    </fragment>
 </navigation>

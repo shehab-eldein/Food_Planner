@@ -1,6 +1,7 @@
 package com.example.foodplanner.OnBoarding.View.MealListView;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.OnBoarding.Favorite.Favorite_Fragment;
+import com.example.foodplanner.OnBoarding.Favorite.Favorite_FragmentDirections;
+import com.example.foodplanner.OnBoarding.Home.Home_FragmentDirections;
+import com.example.foodplanner.OnBoarding.MealList.MealList_Fragment;
+import com.example.foodplanner.OnBoarding.MealList.MealList_FragmentDirections;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.R;
@@ -60,6 +66,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
                 @Override
                 public void onClick(View view) {
                     onClickMealListenerFav.onClickMealFav(favMeal,position);
+                    Log.i("clicked","Meal List Adapter first");
                 }
             });
 
@@ -72,6 +79,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
                 @Override
                 public void onClick(View view) {
                     onMeallistClickListener.onClickMealList(meal,position);
+                    Log.i("clicked","Meal List Adapter second");
                 }
             });
         }
@@ -103,13 +111,25 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.Holder
             meal_photo = itemView.findViewById(R.id.meal_image);
             meal_name_tv=itemView.findViewById(R.id.meal_name);
 
-//////////////////////////////////////
+
             delete=itemView.findViewById(R.id.delete_btn);
+            itemView.setOnClickListener(this);
         }
 
 
         @Override
         public void onClick(View v) {
+
+            if (isFav) {
+                Favorite_FragmentDirections.ActionFavoriteFragmentToDetailFragment action = Favorite_FragmentDirections.actionFavoriteFragmentToDetailFragment();
+                action.setID(fav_meals.get(this.getAdapterPosition()).getIdMeal());
+                Navigation.findNavController(v).navigate(action);
+            } else  {
+                MealList_FragmentDirections.ActionMealListFragmentToDetailFragment action = MealList_FragmentDirections.actionMealListFragmentToDetailFragment();
+                action.setID(meal_list.get(this.getAdapterPosition()).getIdMeal());
+                Navigation.findNavController(v).navigate(action);
+            }
+
 
 
         }

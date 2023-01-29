@@ -36,20 +36,19 @@ public class Favorite_Fragment extends Fragment implements OnClickMealListenerFa
         super.onCreate(savedInstanceState);
         fireRepo = new FavFireStoreRepo();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         repo = new RoomRepo(this,requireContext());
         return inflater.inflate(R.layout.fragment_favorite_, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         connectDesign(view);
         Loading.activeLoading(requireContext());
         repo.getFavMeals();
+
     }
 
     void connectDesign(View view) {
@@ -65,6 +64,7 @@ public class Favorite_Fragment extends Fragment implements OnClickMealListenerFa
 
     @Override
     public void succsessFavList(List<Meal> meals) {
+        Loading.dismiss();
         fav_meals = meals;
         Loading.dismiss();
         fav_rv.setHasFixedSize(true);
@@ -77,7 +77,8 @@ public class Favorite_Fragment extends Fragment implements OnClickMealListenerFa
 
     @Override
     public void failFavList(String err) {
-
+        Loading.dismiss();
+        Loading.alert(requireContext(),"Can't Fetch Your Favorite List Please Try again");
     }
 
 

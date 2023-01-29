@@ -8,7 +8,7 @@ import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
 import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
-import com.example.foodplanner.OnBoarding.DB.FireStore.UserFav;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Model.UserFav;
 import com.example.foodplanner.OnBoarding.network.NetworkRepo;
 import com.example.foodplanner.OnBoarding.network.Presenters.DetailPresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavFireStoreRepo implements DetailPresenter {
+public class FavFireStoreRepo implements DetailPresenter  {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth firebaseAuth;
     DocumentReference docRef;
@@ -34,6 +34,7 @@ public class FavFireStoreRepo implements DetailPresenter {
     FavFireStorePresenter fireStorePresenter;
     ArrayList<String> idArray;
     ArrayList<String> idDays ;
+
 
 
 
@@ -73,6 +74,8 @@ public class FavFireStoreRepo implements DetailPresenter {
 
     }
     public void deleteFavMeal(String id) {
+
+
         db.collection("Fav")
                 .document(CurrentUser.getEmail())
 

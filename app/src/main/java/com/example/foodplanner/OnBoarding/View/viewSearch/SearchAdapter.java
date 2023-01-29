@@ -100,6 +100,7 @@ public class SearchAdapter extends   RecyclerView.Adapter<SearchAdapter.Holder> 
 
         }
 
+        //Search Not Result
         @Override
         public void onClick(View view) {
             if(tempAr.contains(view.getTag().toString())) {

@@ -1,42 +1,39 @@
 package com.example.foodplanner.OnBoarding.DB.FireStore.MealList;
 
+import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.foodplanner.OnBoarding.DB.Room.RoomRepo;
 import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
 import com.example.foodplanner.OnBoarding.Models.MealListModel.MealList;
-import com.example.foodplanner.OnBoarding.Models.detailsModel.Detail;
-import com.example.foodplanner.OnBoarding.DB.FireStore.MealListFS;
+import com.example.foodplanner.OnBoarding.DB.FireStore.Model.MealListFS;
 import com.example.foodplanner.OnBoarding.network.NetworkRepo;
-import com.example.foodplanner.OnBoarding.network.Presenters.DetailPresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-public class ListFireStoreRepo   {
+public class ListFireStoreRepo  {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     DocumentReference docRef;
     NetworkRepo helperr ;
-    List<MealList> days_meals;
+    ArrayList<MealList> days_meals;
     ListFireStorePresenter listFireStorePresenter;
+    Context requiredContext;
+    public ListFireStoreRepo(ListFireStorePresenter fireStorePresenter, Context requiredContext) {
 
-    public ListFireStoreRepo(ListFireStorePresenter fireStorePresenter) {
+
         this.listFireStorePresenter = fireStorePresenter;
     }
 
@@ -44,10 +41,10 @@ public class ListFireStoreRepo   {
 
     }
     private void insertMealListDay(MealList meal) {
-        ArrayList<MealList> meals = new ArrayList<>();
-        MealListFS mealListFS = new MealListFS(meals);
+       // String day, String idMeal, String strMeal, String strMealThumb
+        MealListFS myMeal = new MealListFS(meal.getDay(),String.valueOf(meal.getIdMeal()),meal.strMeal,meal.strMealThumb);
         db.collection("Meals").document(CurrentUser.getEmail())
-                .set(mealListFS)
+                .set(myMeal)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -64,9 +61,10 @@ public class ListFireStoreRepo   {
                 });
     }
     private void updateMealList(MealList meal) {
+        MealListFS myMeal = new MealListFS(meal.getDay(),String.valueOf(meal.getIdMeal()),meal.strMeal,meal.strMealThumb);
         db.collection("Meals")
                 .document(CurrentUser.getEmail())
-                .update("Meals", FieldValue.arrayUnion(meal) ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .update("Meals", FieldValue.arrayUnion(myMeal) ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         // Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
@@ -100,65 +98,60 @@ public class ListFireStoreRepo   {
         });
     }
     public void deleteMealListMeal(MealList meal) {
-        db.collection("Meals")
-                .document(CurrentUser.getEmail())
-
-                .update("Meals", FieldValue.arrayRemove(meal)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Meals").document(CurrentUser.getEmail())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        // Toast.makeText(requireContext(), "The Meal Added To Favorite", Toast.LENGTH_LONG).show();
+                    public void onSuccess(Void aVoid) {
+                        Log.d("DATAA", "DocumentSnapshot successfully deleted!");
+
+
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                })
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //  Toast.makeText(requireContext(), "The Meal  Failed Added To Favorite Try Again", Toast.LENGTH_LONG).show();
+                        Log.w("DATAA", "Error deleting document", e);
                     }
                 });
 
     }
 
     public void getMealList() {
+        days_meals = new ArrayList<>();
         docRef = db.collection("Meals").document(CurrentUser.getEmail());
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-
-
-                        Map<String, Object> map = document.getData();
-                        for (Map.Entry<String, Object> entry : map.entrySet()) {
-                            if (entry.getKey().equals("Meals")) {
-                                //Log.d("TAG", entry.getValue().toString());
-//                                MealList meal =entry.getValue().
-//                                Log.d("DATAA", ""+  entry.getValue().toString());
-//                                days_meals.add(entry.getValue());
-                            }
+                        List<Map<String, Object>> mealsss = (List<Map<String, Object>>) document.get("Meals");
+                        for (Map<String,Object> meal :mealsss) {
+                            MealList mealList = new MealList(meal.get("strMeal").toString(),meal.get("strMealThumb").toString(), Long.parseLong( meal.get("idMeal").toString()),meal.get("day").toString());
+                            days_meals.add(mealList);
                         }
-                        //document.get("Meals");
-                    // MealListFS meals =  document.toObject(MealListFS.class);;
 
-                        //MealList mealList = (MealList) meals.get(0);
+                        listFireStorePresenter.succsessFireStoreList(days_meals);
 
-                        //listFireStorePresenter.succsessFireStoreList(meals);
-                        //meals = (MealListFS) document.toObject(MealListFS.class);
-                        //Long id = Long.parseLong(idArray.get(0));
+
+
+                    }
 
 
                     } else {
                         Log.d("DATA", "No such document");
                     }
-                } else {
-                    Log.d("DATA", "get failed with ", task.getException());
                 }
-            }
+
         });
 
 
 
-    }
+}
 
 
 
 }
+

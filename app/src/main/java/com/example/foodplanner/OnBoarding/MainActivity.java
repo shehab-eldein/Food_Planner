@@ -104,14 +104,14 @@ View view;
                                 return true;
                             case R.id.list:
                                 if (CurrentUser.getIsGuest()) {
-                                    Loading.guestAlert(MainActivity.this);
+                                    Loading.alert(MainActivity.this,"Guest can't use Favorite or Meal List please Sign up to can use it");
                                 }else{
                                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.mealList_Fragment);
                                 }
                                 return true;
                             case R.id.fav:
                                 if (CurrentUser.getIsGuest()) {
-                                    Loading.guestAlert(MainActivity.this);
+                                    Loading.alert(MainActivity.this,"Guest can't use Favorite or Meal List please Sign up to can use it");
                                 }else{
                                     Navigation.findNavController(MainActivity.this,R.id.nav_host_fragment).navigate(R.id.favorite_Fragment);
                                 }

@@ -20,21 +20,21 @@ import retrofit2.Retrofit;
 
 public class NetworkRepo {
     RandomPresenter randomDelegate;
-    CategoryPresenter categoryDelegate;
+
     DetailPresenter detailDelegate;
     String[] random_countrys = new String[]{"British", "French", "Egyptian", "Japanese", "Croatian", "Canadian", "Indian", "Polish"};
 
     ArrayList<Meal> meals;
-    ArrayList<Category> categories;
+
     ArrayList<Detail> details;
     Retrofit mealClient = APIClient.getClient();
     APIinterface apiInterface = mealClient.create(APIinterface.class);
     Long id;
 
 
-    public NetworkRepo(RandomPresenter randomDelegate, CategoryPresenter categoryDelegate) {
+    public NetworkRepo(RandomPresenter randomDelegate) {
         this.randomDelegate = randomDelegate;
-        this.categoryDelegate = categoryDelegate;
+
     }
 
     public NetworkRepo(DetailPresenter detailDelegate, Long id) {
@@ -59,20 +59,7 @@ public class NetworkRepo {
 
                 });
     }
-    public void getCategories() {
 
-        Observable<RootCategory> categoryObservable = apiInterface.getAllCategories();
-
-        categoryObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    categories = (ArrayList<Category>) response.getCategories();
-                    categoryDelegate.succsessCategory(categories);
-                }, error -> {
-                    categoryDelegate.failCategory(error.toString());
-                });
-    }
     public void getMealsDetails() {
 
         Observable<DetailRoot> mealObservable = apiInterface.getByID(id);

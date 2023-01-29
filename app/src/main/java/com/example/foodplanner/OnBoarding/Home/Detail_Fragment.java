@@ -43,13 +43,13 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
     ImageView mealImage;
     YouTubePlayerView mealVidio;
     private ArrayList<String> favMeals  = new ArrayList<>();
-    MealList mealList;
+    MealList mealList = new MealList();
     Meal mealFav;
     RoomRepo repo;
     FavFireStoreRepo fireRepo;
     ListFireStoreRepo listFireStoreRepo;
     String[] days = {"Sunday", "Monday", "Tuesday", "Wendnesday","Thursday","Friday","Saturday"};
-    String day = "Sunday";
+    String day= "Sunday";
     Spinner spino;
 
     @Override
@@ -73,8 +73,6 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
         connectDesign(view);
         getLifecycle().addObserver(mealVidio);
         id = Detail_FragmentArgs.fromBundle(getArguments()).getID();
-
-
         favBtnClicked();
         ListBtnClicked();
         checkGeust();
@@ -98,15 +96,13 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
             meal_list.setVisibility(View.GONE);
         }
     }
-
-
-
     void favBtnClicked() {
         favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 repo.insertFav(mealFav);
                 fireRepo.addFavMeal(  String.valueOf(mealFav.getIdMeal()));
+                Toast.makeText(getContext(), "Your Meal Added to Favorite", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -118,11 +114,12 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
                     public void onClick(View view) {
                         repo.insertMealList(mealList);
                         listFireStoreRepo.addMealListMeal(mealList);
+                        Toast.makeText(getContext(), "Your Meal Added to your Meal List", Toast.LENGTH_SHORT).show();
+
                     }
                 }
         );
     }
-
     void connectDesign(View view) {
         mealName = view.findViewById(R.id.meal_Name);
         mealArea = view.findViewById(R.id.detail_mealArea);
@@ -134,8 +131,6 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
         spino = view.findViewById(R.id.spinnerDays);
 
     }
-
-
 
     @Override
     public void succsessDetails(ArrayList<Detail> details) {
@@ -159,23 +154,24 @@ public class Detail_Fragment extends Fragment implements DetailPresenter, Adapte
         mealFav=new Meal(details.get(0).strMeal,details.get(0).strMealThumb,Long.valueOf(details.get(0).idMeal),details.get(0).strInstructions,details.get(0).strArea);
 
     }
-
     @Override
     public void failDetails(String err) {
 
+        Loading.dismiss();
+        Loading.alert(requireContext(),"Can't Get Meal Details Know According to Network Please Try Again Later");
+
     }
-
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(requireContext(), days[position], Toast.LENGTH_LONG)
                 .show();
         day = days[position];
-
+        mealList.setDay(day);
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 }

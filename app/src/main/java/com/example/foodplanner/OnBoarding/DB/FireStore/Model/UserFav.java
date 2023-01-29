@@ -1,4 +1,4 @@
-package com.example.foodplanner.OnBoarding.DB.FireStore;
+package com.example.foodplanner.OnBoarding.DB.FireStore.Model;
 
 import com.google.firebase.firestore.Exclude;
 

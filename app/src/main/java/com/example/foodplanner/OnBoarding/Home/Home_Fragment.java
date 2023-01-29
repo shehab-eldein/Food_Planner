@@ -2,6 +2,7 @@ package com.example.foodplanner.OnBoarding.Home;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -70,29 +71,25 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 
-public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter, CategoryPresenter
+public class Home_Fragment extends Fragment implements OnMealClick, RandomPresenter
 , FavFireStorePresenter, ListFireStorePresenter, OnFilteredSearchMealsClick {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    RecyclerView categoryRecyclerView;
-    RecyclerView randomRecyclerView;
+    RecyclerView categoryRecyclerView,randomRecyclerView;
     MealAdapter adapter;
     ArrayList<Meal> mealArrayList;
-    ArrayList<Category> categoryArrayList;
     NetworkRepo helperr ;
-    DocumentReference docRef;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ArrayList<String> idArray= new ArrayList<>();
+    View view;
     RoomRepo repo;
-    ImageView logout_btn;
-    ImageView backeUp;
+    ImageView logout_btn,backeUp;
     FavFireStoreRepo fireStoreRepo;
     ListFireStoreRepo listFireStoreRepo;
     TextView userName;
-
-List <Meal>mealArrayListRondome=new ArrayList<Meal>();
+    List <Meal>mealArrayListRondome=new ArrayList<Meal>();
     FilteredMealAdapterSearch filteredMealAdapterSearch;
+    SharedPreferences sharedPref;
+    Boolean Registered;
 
 
     @Override
@@ -101,31 +98,30 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        helperr =  new NetworkRepo(this,this);
+        helperr =  new NetworkRepo(this);
         repo = new RoomRepo(requireContext());
         fireStoreRepo = new FavFireStoreRepo(this);
-        listFireStoreRepo = new ListFireStoreRepo(this);
+        listFireStoreRepo = new ListFireStoreRepo(this,requireContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // docRef =  db.collection("Fav").document(CurrentUser.getEmail());
+
         return inflater.inflate(R.layout.fragment_home_, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
         connectDesign(view);
         helperr.getRandomMeals();
-        helperr.getCategories();
         logOutBtnClicked();
-      //  Loading.activeLoading(requireContext());
+       Loading.activeLoading(requireContext());
         setCurrentUser();
         backeUpBtnClicked();
         setUserName();
-
         getRandomMeal();
     }
     void setUserName() {
@@ -168,8 +164,11 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
             public void onClick(View view) {
                 repo.deleteAllFav();
                 repo.deleteAllList();
-               // goSigns();
-               // CurrentUser.setIsGuest(false);
+                goSigns();
+                CurrentUser.setIsGuest(false);
+                sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                Registered = sharedPref.getBoolean("Registered", false);
+
 
             }
         });
@@ -190,36 +189,17 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
         randomRecyclerView.setAdapter(adapter);
         Loading.dismiss();
     }
-
     @Override
     public void failRandoms(String err) {
+        Loading.dismiss();
+        Loading.alert(requireContext(),"Can't Fetch Data For Network Reason Please Try Again Later");
+
 
     }
-
     @Override
     public void onClickIndex(int position) {
 
     }
-
-    @Override
-    public void succsessCategory(ArrayList<Category> categories) {
-//        categoryArrayList = categories;
-//        categoryRecyclerView.setHasFixedSize(true);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-//        categoryRecyclerView.setLayoutManager(linearLayoutManager);
-//        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-//        adapter = new MealAdapter(this.categoryArrayList, false);
-//        categoryRecyclerView.setAdapter(adapter);
-//        //progress.dismiss();
-    }
-
-    @Override
-    public void failCategory(String err) {
-
-    }
-
-
-
     @Override
     public void succsessFireStoreFav(List<Meal> meals) {
         for(Meal meal:meals) {
@@ -230,30 +210,25 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
     }
     @Override
     public void failFireStoreFav(String err) {
-
+        Loading.dismiss();
+        Loading.alert(requireContext(),"Can't Fetch Your Cloud Favorite For Network Reason Please Try Again Later");
     }
-
     @Override
     public void succsessFireStoreList(ArrayList<MealList> meals) {
         for(MealList meal:meals) {
-           // meal.setDay("Sunday");
             repo.insertMealList(meal);
-            //repo.insertFav(new Meal(meal.getStrMeal(),meal.getStrMealThumb(),meal.getIdMeal(),"hello","egypt"));
         }
 
         Loading.dismiss();
 
     }
-
     @Override
     public void failFireStoreList(String err) {
-        Log.i("eeee", "failFireStoreList: "+err);
+        Loading.dismiss();
+        Loading.alert(requireContext(),"Can't Fetch Your Cloud Meal List Data For Network Reason Please Try Again Later");
+
 
     }
-
-
-
-
     public void getRandomMeal(){
 
 
@@ -293,8 +268,6 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
 
 
     }
-
-
     void succsessMealList(List<Meal> filterdListMeal){
 
 
@@ -312,7 +285,7 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
                 categoryRecyclerView.setLayoutManager(linearLayoutManagerSearch2);
                 linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
 
-                filteredMealAdapterSearch = new FilteredMealAdapterSearch(mealArrayListRondome,Home_Fragment.this);
+                filteredMealAdapterSearch = new FilteredMealAdapterSearch(mealArrayListRondome,Home_Fragment.this,false);
                 categoryRecyclerView.setAdapter(filteredMealAdapterSearch);
 
             }
@@ -322,10 +295,12 @@ List <Meal>mealArrayListRondome=new ArrayList<Meal>();
                 Toast.makeText(getContext(), "There are no meals available", Toast.LENGTH_LONG).show();
             }}
     }
-
     @Override
     public void onClickItem(Long idMeal) {
         Log.i("FilteredMealAdapterSearch", "onClick: Search Frag "+idMeal);
+        Home_FragmentDirections.ActionHomeFragmentToDetailFragment action = Home_FragmentDirections.actionHomeFragmentToDetailFragment();
+        action.setID(idMeal);
+        Navigation.findNavController(view).navigate(action);
     }
 
 }

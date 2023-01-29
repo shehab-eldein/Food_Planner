@@ -30,6 +30,8 @@ import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
 import com.example.foodplanner.OnBoarding.Models.mealModel.RootMeal;
 
 
+import com.example.foodplanner.OnBoarding.Utilites.CurrentUser;
+import com.example.foodplanner.OnBoarding.Utilites.Loading;
 import com.example.foodplanner.OnBoarding.View.MealFilterdView.FilteredMealAdapterSearch;
 import com.example.foodplanner.OnBoarding.View.MealFilterdView.OnFilteredSearchMealsClick;
 import com.example.foodplanner.OnBoarding.View.viewSearch.OnSearchClick;
@@ -87,6 +89,9 @@ public class Search_Fragment extends Fragment implements OnSearchClick , OnFilte
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(CurrentUser.getIsConnected() == false) {
+            Loading.alert(requireContext(),"There is No Internet Connection To Search Please Connect to Network Then Try Again");
+        }
 
         search = view.findViewById(R.id.search_view);
         recyclerView_result=view.findViewById(R.id.search_reslut_rv);
@@ -112,12 +117,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick , OnFilte
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull RootMealIngredient rootMealIngredient) {
                         ingredients = rootMealIngredient.getMeals();
                         Log.i("TAG", "onSuccess: iiiiiiiiiiiiiiiiiiiiiiii "+ingredients.size());
-//                        recyclerView.setHasFixedSize(true);
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-//                        recyclerView.setLayoutManager(linearLayoutManager);
-//                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-//                        ingredientAdapter = new IngredientAdapter(ingredients);//, Search_Fragment.this);
-//                        recyclerView.setAdapter(ingredientAdapter);
+
                     }
 
                     @Override
@@ -375,7 +375,7 @@ public class Search_Fragment extends Fragment implements OnSearchClick , OnFilte
                 recyclerViewResults.setLayoutManager(linearLayoutManagerSearch2);
                 linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
 
-                filteredMealAdapterSearch = new FilteredMealAdapterSearch(filterdListMeal,Search_Fragment.this);
+                filteredMealAdapterSearch = new FilteredMealAdapterSearch(filterdListMeal,Search_Fragment.this,true);
                 recyclerViewResults.setAdapter(filteredMealAdapterSearch);
 
             }

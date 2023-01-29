@@ -1,6 +1,7 @@
 package com.example.foodplanner.OnBoarding.View.IngredientView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +75,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Ho
         @Override
         public void onClick(View view) {
             //listOnClickItem.onClickIndex(getAdapterPosition());
+            Log.i("clicked","ingrediant adapter");
 
         }
 

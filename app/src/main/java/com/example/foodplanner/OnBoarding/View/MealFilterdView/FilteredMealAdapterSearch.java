@@ -8,10 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodplanner.OnBoarding.Home.Home_FragmentDirections;
 import com.example.foodplanner.OnBoarding.Models.mealModel.Meal;
+import com.example.foodplanner.OnBoarding.Search.Search_Fragment;
+import com.example.foodplanner.OnBoarding.Search.Search_FragmentDirections;
 import com.example.foodplanner.R;
 
 import java.util.ArrayList;
@@ -21,11 +25,14 @@ import java.util.List;
 public class FilteredMealAdapterSearch extends RecyclerView.Adapter<FilteredMealAdapterSearch.Holder>  {
     private List<Meal> list = new ArrayList<>();
     OnFilteredSearchMealsClick onFilteredSearchMealsClick;
+    Boolean isSearch;
 
 
-    public FilteredMealAdapterSearch(List<Meal> list,OnFilteredSearchMealsClick onFilteredSearchMealsClick){
+
+    public FilteredMealAdapterSearch(List<Meal> list,OnFilteredSearchMealsClick onFilteredSearchMealsClick,Boolean isSearch){
         this.list = list;
         this.onFilteredSearchMealsClick=onFilteredSearchMealsClick;
+        this.isSearch = isSearch;
 
     }
 
@@ -74,8 +81,15 @@ public class FilteredMealAdapterSearch extends RecyclerView.Adapter<FilteredMeal
 
         @Override
         public void onClick(View view) {
+
             onFilteredSearchMealsClick.onClickItem((Long) view.getTag());
-            Log.i("FilteredMealAdapterSearch", "onClick: FilteredMealAdapterSearch "+view.getTag());
+            Log.i("clicked","filterd meal adapter search  second");
+            if (isSearch) {
+                Search_FragmentDirections.ActionSearchFragmentToDetailFragment action = Search_FragmentDirections.actionSearchFragmentToDetailFragment();
+                action.setID(list.get(this.getAdapterPosition()).getIdMeal());
+                Navigation.findNavController(view).navigate(action);
+            }
+
         }
     }
 

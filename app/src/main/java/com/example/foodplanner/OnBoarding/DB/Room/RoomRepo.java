@@ -11,6 +11,7 @@ import com.example.foodplanner.OnBoarding.DB.Room.Presenters.GetMealListPresente
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -23,6 +24,7 @@ public class RoomRepo {
     GetFavPresenter getFavPresenter;
     GetMealListPresenter getMealListPresenter;
     Context requireContext;
+
 
     public RoomRepo(GetMealListPresenter getMealListPresenter,Context requireContext) {
         this.getMealListPresenter = getMealListPresenter;
@@ -114,6 +116,30 @@ public class RoomRepo {
         });
 
     }
+    public void getMealsList(){
+      dao.getListMeals().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<MealList>>() {
+          @Override
+          public void onSubscribe(@NonNull Disposable d) {
+
+          }
+
+          @Override
+          public void onSuccess(@NonNull List<MealList> mealLists) {
+              Log.i("roomm", "onSuccess: "+mealLists.size());
+
+              mealList_meals = mealLists;
+
+
+          }
+
+          @Override
+          public void onError(@NonNull Throwable e) {
+
+              Log.i("roomm", "error: "+e.getMessage());
+          }
+      });
+
+    }
     public void deleteMealFromFav(Meal meal) {
         dao.deleteFavMeal(meal)
                 .subscribeOn(Schedulers.io())
@@ -153,13 +179,7 @@ public class RoomRepo {
 
                         mealList_meals = mealLists;
                         getMealListPresenter.succsessMealList(mealList_meals);
-                      /*  mealList_rv.setHasFixedSize(true);
-                        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(requireContext());
-                        mealList_rv.setLayoutManager(linearLayoutManager);
-                        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                        mealListAdapter=new MealListAdapter(mealList_meals, MealList_Fragment.this);
-                        mealList_rv.setAdapter(mealListAdapter);
-                        */
+
                         Log.i("mealsss", "Succ: "+mealLists.size());
                     }
 
@@ -182,6 +202,8 @@ public class RoomRepo {
 
                     @Override
                     public void onComplete() {
+
+
 
                     }
 

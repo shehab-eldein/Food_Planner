@@ -19,9 +19,10 @@ public class Loading {
     public static void dismiss() {
         progress.dismiss();
     }
-    public static void guestAlert(Context requireContext) {
+
+    public static void alert(Context requireContext, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext);
-        builder.setMessage("Guest can't use Favorite or Meal List please Sign up to can use it");
+        builder.setMessage(message);
         builder.setTitle("Alert !");
         builder.setCancelable(false);
         builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {

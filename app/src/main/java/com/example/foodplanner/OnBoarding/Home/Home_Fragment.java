@@ -180,14 +180,35 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
 
     @Override
     public void succsessRandoms(ArrayList<Meal> meals) {
+//        mealArrayList = meals;
+//        randomRecyclerView.setHasFixedSize(true);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+//        randomRecyclerView.setLayoutManager(linearLayoutManager);
+//        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+//        adapter = new MealAdapter(this.mealArrayList, Home_Fragment.this,true);
+//        randomRecyclerView.setAdapter(adapter);
+//        Loading.dismiss();
+
+
+
+
+
+
+
+
         mealArrayList = meals;
-        randomRecyclerView.setHasFixedSize(true);
+        categoryRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
-        randomRecyclerView.setLayoutManager(linearLayoutManager);
+        categoryRecyclerView.setLayoutManager(linearLayoutManager);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        adapter = new MealAdapter(this.mealArrayList, Home_Fragment.this,true);
-        randomRecyclerView.setAdapter(adapter);
+        adapter = new MealAdapter(this.mealArrayList, Home_Fragment.this, true);
+        categoryRecyclerView.setAdapter(adapter);
         Loading.dismiss();
+
+
+
+
+
     }
     @Override
     public void failRandoms(String err) {
@@ -277,16 +298,33 @@ public class Home_Fragment extends Fragment implements OnMealClick, RandomPresen
         else {
 
             if (!filterdListMeal.isEmpty()) {
-                Toast.makeText(getContext(), "Done"  , Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Done"  , Toast.LENGTH_LONG).show();
+//
+//                categoryRecyclerView.new Recycler();
+//                categoryRecyclerView.setHasFixedSize(true);
+//                LinearLayoutManager linearLayoutManagerSearch2 = new LinearLayoutManager(requireContext());
+//                categoryRecyclerView.setLayoutManager(linearLayoutManagerSearch2);
+//                linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
+//
+//                filteredMealAdapterSearch = new FilteredMealAdapterSearch(mealArrayListRondome,Home_Fragment.this,false);
+//                categoryRecyclerView.setAdapter(filteredMealAdapterSearch);
 
-                categoryRecyclerView.new Recycler();
-                categoryRecyclerView.setHasFixedSize(true);
+
+
+
+
+                Toast.makeText(getContext(), "Done"  , Toast.LENGTH_LONG).show();
+                randomRecyclerView.new Recycler();
+                randomRecyclerView.setHasFixedSize(true);
                 LinearLayoutManager linearLayoutManagerSearch2 = new LinearLayoutManager(requireContext());
-                categoryRecyclerView.setLayoutManager(linearLayoutManagerSearch2);
+                randomRecyclerView.setLayoutManager(linearLayoutManagerSearch2);
                 linearLayoutManagerSearch2.setOrientation(RecyclerView.HORIZONTAL);
 
                 filteredMealAdapterSearch = new FilteredMealAdapterSearch(mealArrayListRondome,Home_Fragment.this,false);
-                categoryRecyclerView.setAdapter(filteredMealAdapterSearch);
+                randomRecyclerView.setAdapter(filteredMealAdapterSearch);
+
+
+
 
             }
             else  if (filterdListMeal.size()==0)  {

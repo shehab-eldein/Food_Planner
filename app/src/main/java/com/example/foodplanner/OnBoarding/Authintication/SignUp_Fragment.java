@@ -55,6 +55,12 @@ public class SignUp_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         connectDesign(view);
         signUpBtnClicked();
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.signIn_Fragment2);
+            }
+        });
     }
 
     void signUpBtnClicked() {

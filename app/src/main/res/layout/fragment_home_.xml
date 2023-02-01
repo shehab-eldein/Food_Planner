@@ -64,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
             android:text="@string/planner"
             android:textColor="@color/custom"
             android:textSize="40sp"
@@ -74,7 +75,7 @@
         <TextView
             android:id="@+id/app_name_food_tv"
             android:layout_width="wrap_content"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="90dp"
@@ -117,8 +118,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="156dp"
             android:src="@drawable/home_pizza"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
